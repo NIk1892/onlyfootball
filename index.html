@@ -34,6 +34,9 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
 }
+html {
+  overflow-x: hidden;
+}
 
 body::before {
   content: '';
@@ -447,6 +450,7 @@ body::before {
   grid-template-columns: 280px 1fr 320px;
   gap: 20px;
   min-height: calc(100vh - 112px);
+  overflow-x: hidden;
 }
 
 .sidebar-left, .sidebar-right {
@@ -460,29 +464,46 @@ body::before {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .calendar-toolbar {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
   gap: 12px;
 }
-
+.calendar-toolbar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
 .calendar-title-group {
   display: flex;
-  align-items: baseline;
-  gap: 14px;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
-
 .calendar-title {
   font-family: 'Oswald', sans-serif;
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 600;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
+  text-align: center;
+  background: linear-gradient(135deg, #e0e7ff 0%, #818cf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
-
+.calendar-chips-row {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
 .calendar-subtitle {
   font-size: 13px;
   color: var(--gray-400);
@@ -606,6 +627,7 @@ body::before {
   overflow: hidden;
   flex: 1;
   animation: fadeIn 0.25s ease-out;
+  max-width: 100%;
 }
 
 @keyframes fadeIn {
@@ -616,7 +638,7 @@ body::before {
 /* MONTH VIEW */
 .month-header {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   border-bottom: 1px solid var(--border);
 }
 
@@ -633,14 +655,17 @@ body::before {
 
 .month-grid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   grid-auto-rows: minmax(96px, 1fr);
+  overflow: hidden;
 }
 
 .month-day {
   border: 1px solid rgba(255,255,255,0.02);
   padding: 6px;
   min-height: 96px;
+  min-width: 0;
+  overflow: hidden;
   transition: all 0.15s;
   cursor: pointer;
 }
@@ -1400,9 +1425,9 @@ body::before {
 
   .main-layout { padding: 10px 8px; gap: 14px; }
 
-  .calendar-toolbar { flex-direction: column; align-items: stretch; gap: 10px; }
-  .calendar-toolbar > div:last-child { justify-content: space-between; }
-  .calendar-title { font-size: 20px; }
+  .calendar-toolbar { gap: 10px; }
+  .calendar-toolbar-top { justify-content: center; gap: 10px; }
+  .calendar-title { font-size: 22px; }
   .view-btn { padding: 6px 12px; font-size: 11px; }
   .nav-btn { width: 32px; height: 32px; font-size: 12px; }
   .today-btn { padding: 6px 12px; font-size: 10px; }
@@ -1473,7 +1498,7 @@ body::before {
   .month-day { min-height: 60px; padding: 3px 2px; }
   .month-day-number { font-size: 10px; }
   .league-tab { padding: 5px 7px; font-size: 10px; }
-  .calendar-title { font-size: 17px; }
+  .calendar-title { font-size: 19px; letter-spacing: 1px; }
   .week-day-row { grid-template-columns: 48px 1fr; }
   .week-day-num { font-size: 17px; }
   .day-header-big .day-number { font-size: 40px; }
@@ -1830,6 +1855,10 @@ body::before {
 .mdp-status-live {
   background: rgba(239,68,68,0.15);
   color: #EF4444;
+}
+.mdp-status-upcoming {
+  background: rgba(34,217,127,0.1);
+  color: var(--green);
 }
 
 .mdp-info-row {
@@ -3087,12 +3116,12 @@ function renderToolbar() {
   const y = currentDate.getFullYear();
   const m = currentDate.getMonth();
   let titleText = '';
-  if (currentView === 'month') titleText = `${t('months')[m]} ${y}`;
+  if (currentView === 'month') titleText = `${t('months')[m]}`;
   else if (currentView === 'week') {
     const wk = getWeekDates(currentDate);
-    titleText = `${wk[0].getDate()} ${t('monthsShortGen')[wk[0].getMonth()]} — ${wk[6].getDate()} ${t('monthsShortGen')[wk[6].getMonth()]} ${wk[6].getFullYear()}`;
+    titleText = `${wk[0].getDate()} ${t('monthsShortGen')[wk[0].getMonth()]} — ${wk[6].getDate()} ${t('monthsShortGen')[wk[6].getMonth()]}`;
   } else {
-    titleText = `${currentDate.getDate()} ${t('monthsGen')[m]} ${y}`;
+    titleText = `${currentDate.getDate()} ${t('monthsGen')[m]}`;
   }
 
   const chips = [...activeLeagues].map(lid => {
@@ -3102,13 +3131,11 @@ function renderToolbar() {
 
   return `
     <div class="calendar-toolbar">
-      <div>
-        <div class="calendar-title-group">
-          <div class="calendar-title">${titleText}</div>
-        </div>
-        <div class="active-leagues-display" style="margin-top:4px">${chips}</div>
+      <div class="calendar-title-group">
+        <div class="calendar-title">${titleText}</div>
+        <div class="calendar-chips-row">${chips}</div>
       </div>
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <div class="calendar-toolbar-top">
         <div class="view-switcher">
           ${['day','week','month'].map(v => `
             <button class="view-btn ${currentView===v?'active':''}" data-view="${v}">
@@ -3651,9 +3678,10 @@ function openMatchDetail(m) {
   const key = matchKey(m);
   const events = MATCH_EVENTS[key] || [];
   const isLive = !!m.live;
-  const score = isLive ? m.live.score : m.score;
-  const statusLabel = isLive ? t('liveNow') : t('fullTime');
-  const statusClass = isLive ? 'mdp-status-live' : 'mdp-status-ft';
+  const isUpcoming = !m.score && !isLive;
+  const score = isLive ? m.live.score : (m.score || '—');
+  const statusLabel = isLive ? t('liveNow') : isUpcoming ? t('upcoming') : t('fullTime');
+  const statusClass = isLive ? 'mdp-status-live' : isUpcoming ? 'mdp-status-upcoming' : 'mdp-status-ft';
 
   const eventIcons = {
     goal: '⚽',
