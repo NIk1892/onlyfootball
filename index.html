@@ -1,0 +1,3811 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ТОЛЬКО ФУТБОЛ</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-dark: #0c1220;
+  --bg-card: rgba(255,255,255,0.035);
+  --border: rgba(255,255,255,0.07);
+  --border-hover: rgba(255,255,255,0.14);
+  --white: #ffffff;
+  --gray-100: #eef0f6;
+  --gray-200: #c8cdd8;
+  --gray-300: #8e95a8;
+  --gray-400: #5c6478;
+  --gray-500: #3a4050;
+  --accent: #3B82F6;
+  --accent-glow: rgba(59,130,246,0.25);
+  --green: #22D97F;
+  --green-dim: rgba(34,217,127,0.15);
+  --gold: #F59E0B;
+  --gold-dim: rgba(245,158,11,0.15);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Source Sans 3', -apple-system, sans-serif;
+  background: var(--bg-dark);
+  color: var(--white);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0,0,0,0.3) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Animated background orbs */
+@keyframes float1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(60px, -40px) scale(1.1); }
+  50% { transform: translate(-30px, -80px) scale(0.95); }
+  75% { transform: translate(-60px, 20px) scale(1.05); }
+}
+@keyframes float2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(-50px, 50px) scale(1.08); }
+  50% { transform: translate(40px, 30px) scale(0.92); }
+  75% { transform: translate(70px, -40px) scale(1.04); }
+}
+@keyframes float3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(40px, 60px) scale(1.06); }
+  66% { transform: translate(-60px, -30px) scale(0.96); }
+}
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.7; }
+}
+
+.bg-orbs {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+}
+
+.bg-orb--1 {
+  width: 400px; height: 400px;
+  top: -5%; left: 5%;
+  background: radial-gradient(circle, rgba(59,130,246,0.08), transparent 70%);
+  animation: float1 25s ease-in-out infinite;
+}
+.bg-orb--2 {
+  width: 350px; height: 350px;
+  top: 60%; right: 5%;
+  background: radial-gradient(circle, rgba(34,217,127,0.06), transparent 70%);
+  animation: float2 30s ease-in-out infinite;
+}
+.bg-orb--3 {
+  width: 300px; height: 300px;
+  bottom: 10%; left: 30%;
+  background: radial-gradient(circle, rgba(245,158,11,0.05), transparent 70%);
+  animation: float3 20s ease-in-out infinite;
+}
+.bg-orb--4 {
+  width: 200px; height: 200px;
+  top: 30%; left: 55%;
+  background: radial-gradient(circle, rgba(59,130,246,0.04), transparent 70%);
+  animation: float2 35s ease-in-out infinite reverse;
+}
+.bg-orb--5 {
+  width: 250px; height: 250px;
+  top: 10%; right: 20%;
+  background: radial-gradient(circle, rgba(245,158,11,0.035), transparent 70%);
+  animation: float1 28s ease-in-out infinite reverse;
+}
+
+/* Subtle animated scan line */
+.bg-scanline {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(59,130,246,0.012) 50%,
+    transparent 100%
+  );
+  background-size: 100% 300%;
+  animation: scanMove 12s ease-in-out infinite;
+}
+
+@keyframes scanMove {
+  0% { background-position: 0% 0%; }
+  50% { background-position: 0% 100%; }
+  100% { background-position: 0% 0%; }
+}
+
+/* ===== HEADER ===== */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(12,18,32,0.94);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 32px;
+}
+
+.header-inner {
+  max-width: 1600px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icon {
+  width: 34px;
+  height: 34px;
+  background: linear-gradient(135deg, var(--accent), #F59E0B);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  font-family: 'Oswald', sans-serif;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  transition: background 1s ease;
+}
+
+.logo-icon .logo-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.3) rotate(-60deg);
+  transition: opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1);
+  pointer-events: none;
+}
+.logo-icon .logo-face.active {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+.logo-icon .logo-face.exit {
+  opacity: 0;
+  transform: scale(0.3) rotate(60deg);
+}
+.logo-icon .logo-face svg {
+  width: 24px;
+  height: 24px;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.3));
+}
+.logo-icon .logo-face.is-emoji {
+  font-size: 19px;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.25));
+}
+
+.logo-text {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #fff, rgba(255,255,255,0.65));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.logo-sub {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 300;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--green);
+  opacity: 0.75;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.lang-btn {
+  font-family: 'Oswald', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  padding: 5px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  color: var(--gray-300);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+}
+.lang-btn:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.15);
+  color: var(--white);
+}
+
+.season-selector {
+  position: relative;
+}
+
+.season-badge {
+  font-family: 'Oswald', sans-serif;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gray-300);
+  padding: 5px 14px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.03);
+}
+.season-badge:hover {
+  border-color: rgba(255,255,255,0.15);
+  color: var(--gray-100);
+  background: rgba(255,255,255,0.06);
+}
+.season-badge .chevron {
+  font-size: 8px;
+  transition: transform 0.2s;
+}
+.season-selector.open .season-badge .chevron {
+  transform: rotate(180deg);
+}
+.season-selector.open .season-badge {
+  border-color: rgba(255,255,255,0.2);
+  color: var(--white);
+  background: rgba(255,255,255,0.06);
+}
+
+.season-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background: #151f30;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 4px;
+  min-width: 130px;
+  z-index: 150;
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+.season-selector.open .season-dropdown {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.season-option {
+  display: block;
+  width: 100%;
+  padding: 7px 14px;
+  border: none;
+  background: transparent;
+  color: var(--gray-400);
+  font-family: 'Oswald', sans-serif;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 7px;
+  transition: all 0.15s;
+}
+.season-option:hover {
+  background: rgba(255,255,255,0.06);
+  color: var(--white);
+}
+.season-option.active {
+  color: var(--green);
+  background: rgba(34,217,127,0.08);
+  font-weight: 600;
+}
+
+/* ===== LEAGUE SELECTOR ===== */
+.league-bar {
+  position: sticky;
+  top: 60px;
+  z-index: 99;
+  background: rgba(12,18,32,0.88);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 32px;
+}
+
+.league-bar-inner {
+  max-width: 1600px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 52px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.league-bar-inner::-webkit-scrollbar { display: none; }
+
+.league-tab {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 14px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.025);
+  color: var(--gray-400);
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: all 0.25s;
+  white-space: nowrap;
+  flex-shrink: 0;
+  backdrop-filter: blur(4px);
+}
+
+.league-tab:hover {
+  color: var(--gray-100);
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.12);
+  transform: translateY(-1px);
+}
+
+.league-tab.active {
+  color: var(--white);
+  background: linear-gradient(135deg, #6366F1, #4F46E5);
+  border-color: rgba(99,102,241,0.3);
+  box-shadow: 0 3px 16px rgba(99,102,241,0.3), inset 0 1px 0 rgba(255,255,255,0.12);
+  transform: translateY(-1px);
+}
+
+.league-tab .league-flag {
+  font-size: 15px;
+  line-height: 1;
+}
+
+.league-tab .league-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #6366F1;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.league-tab.active .league-dot {
+  opacity: 0;
+}
+
+.league-tab:not(.active) .league-dot {
+  opacity: 0.5;
+}
+
+.league-separator {
+  width: 1px;
+  height: 20px;
+  background: rgba(255,255,255,0.05);
+  flex-shrink: 0;
+  margin: 0 2px;
+}
+
+.league-divider {
+  width: 2px;
+  height: 28px;
+  background: linear-gradient(180deg, transparent, rgba(255,255,255,0.12), transparent);
+  flex-shrink: 0;
+  margin: 0 8px;
+}
+
+/* ===== MAIN LAYOUT ===== */
+.main-layout {
+  position: relative;
+  z-index: 1;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 20px 32px;
+  display: grid;
+  grid-template-columns: 280px 1fr 320px;
+  gap: 20px;
+  min-height: calc(100vh - 112px);
+}
+
+.sidebar-left, .sidebar-right {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ===== CALENDAR ===== */
+.calendar-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.calendar-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.calendar-title-group {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.calendar-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.calendar-subtitle {
+  font-size: 13px;
+  color: var(--gray-400);
+}
+
+.active-leagues-display {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.active-league-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-family: 'Oswald', sans-serif;
+  background: rgba(99,102,241,0.15);
+  color: #818cf8;
+  border: 1px solid rgba(99,102,241,0.25);
+  backdrop-filter: blur(4px);
+}
+
+.view-switcher {
+  display: flex;
+  background: rgba(255,255,255,0.03);
+  border-radius: 20px;
+  padding: 3px;
+  border: 1px solid var(--border);
+  backdrop-filter: blur(4px);
+}
+
+.view-btn {
+  padding: 7px 18px;
+  border: none;
+  background: transparent;
+  color: var(--gray-400);
+  font-family: 'Oswald', sans-serif;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 16px;
+  transition: all 0.25s;
+}
+
+.view-btn:hover {
+  color: var(--white);
+  background: rgba(255,255,255,0.06);
+}
+
+.view-btn.active {
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 2px 12px var(--accent-glow);
+}
+
+.nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-btn {
+  width: 34px; height: 34px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.03);
+  color: var(--gray-300);
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.nav-btn:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.12);
+  color: var(--white);
+  transform: scale(1.05);
+}
+
+.today-btn {
+  padding: 7px 16px;
+  border: 1px solid rgba(59,130,246,0.25);
+  background: rgba(59,130,246,0.06);
+  color: var(--accent);
+  border-radius: 16px;
+  cursor: pointer;
+  font-family: 'Oswald', sans-serif;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+
+.today-btn:hover {
+  background: rgba(59,130,246,0.12);
+  border-color: rgba(59,130,246,0.35);
+}
+
+.today-btn.today-active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  box-shadow: 0 2px 12px var(--accent-glow);
+}
+
+/* ===== CALENDAR GRID ===== */
+.calendar-container {
+  background: rgba(255,255,255,0.015);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  flex: 1;
+  animation: fadeIn 0.25s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* MONTH VIEW */
+.month-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border-bottom: 1px solid var(--border);
+}
+
+.month-header-cell {
+  padding: 10px;
+  text-align: center;
+  font-family: 'Oswald', sans-serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  font-weight: 500;
+}
+
+.month-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-auto-rows: minmax(96px, 1fr);
+}
+
+.month-day {
+  border: 1px solid rgba(255,255,255,0.02);
+  padding: 6px;
+  min-height: 96px;
+  transition: all 0.15s;
+  cursor: pointer;
+}
+
+.month-day:hover {
+  background: rgba(255,255,255,0.025);
+}
+
+.month-day.today {
+  background: rgba(59,130,246,0.06);
+  border-color: rgba(59,130,246,0.15);
+}
+
+.month-day.other-month {
+  opacity: 0.2;
+}
+
+.month-day-number {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gray-300);
+  margin-bottom: 3px;
+}
+
+.month-day.today .month-day-number {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.match-pill {
+  font-size: 9px;
+  padding: 2px 5px;
+  border-radius: 4px;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.match-pill .pill-league-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.match-pill.upcoming {
+  background: rgba(34,217,127,0.08);
+  color: var(--green);
+  border: 1px solid rgba(34,217,127,0.12);
+}
+
+.match-pill.live {
+  background: rgba(239,68,68,0.12);
+  color: #EF4444;
+  border: 1px solid rgba(239,68,68,0.2);
+  font-weight: 600;
+  animation: livePulse 2s ease-in-out infinite;
+}
+
+.match-pill.played {
+  background: rgba(99,102,241,0.1);
+  color: #a5b4fc;
+  border: 1px solid rgba(99,102,241,0.15);
+}
+
+.match-pill:hover {
+  transform: translateX(2px);
+}
+
+/* WEEK VIEW */
+.week-grid {
+  display: flex;
+  flex-direction: column;
+}
+
+.week-day-row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  min-height: 72px;
+}
+
+.week-day-label {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid rgba(255,255,255,0.03);
+}
+
+.week-day-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gray-400);
+}
+
+.week-day-num {
+  font-family: 'Oswald', sans-serif;
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--gray-300);
+}
+
+.week-day-row.today .week-day-num {
+  color: var(--accent);
+}
+
+.week-day-row.today {
+  background: rgba(59,130,246,0.03);
+}
+
+.week-matches {
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.week-match-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.week-match-card:hover {
+  background: rgba(255,255,255,0.05);
+  border-color: var(--border-hover);
+  transform: translateX(3px);
+}
+
+.wmc-league-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.match-time {
+  font-family: 'Oswald', sans-serif;
+  font-size: 12px;
+  color: var(--green);
+  letter-spacing: 0.5px;
+  min-width: 42px;
+}
+
+.match-teams {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.match-vs {
+  color: var(--gray-500);
+  font-weight: 400;
+  margin: 0 5px;
+  font-size: 10px;
+}
+
+.match-score {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  margin-left: auto;
+}
+
+.match-league-abbr {
+  font-family: 'Oswald', sans-serif;
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  margin-left: auto;
+  padding: 2px 5px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.03);
+}
+
+/* DAY VIEW */
+.day-view {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.day-header-big {
+  text-align: center;
+  padding: 16px;
+}
+
+.day-header-big .day-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gray-400);
+}
+
+.day-header-big .day-number {
+  font-family: 'Oswald', sans-serif;
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--accent), #F59E0B);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.day-header-big .day-month-year {
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  margin-top: 3px;
+}
+
+.day-league-group-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 8px 0 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.day-league-group-label .dlg-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.day-match-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.2s;
+}
+
+.day-match-card:hover {
+  background: rgba(255,255,255,0.04);
+  border-color: var(--border-hover);
+}
+
+.day-match-time-block {
+  text-align: center;
+  min-width: 60px;
+}
+
+.day-match-time-block .time {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--green);
+}
+
+.day-match-time-block .broadcast {
+  font-size: 9px;
+  color: var(--gray-500);
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+
+.day-match-teams-block { flex: 1; }
+
+.day-team-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 0;
+}
+
+.team-crest {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.07);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 700;
+  font-family: 'Oswald', sans-serif;
+}
+
+.day-team-name {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.day-match-score-block {
+  text-align: center;
+}
+
+.day-match-score-block .score {
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.day-match-score-block .status {
+  font-size: 10px;
+  color: var(--gray-400);
+  letter-spacing: 0.5px;
+}
+
+/* FEATURED MATCH */
+.featured-section {
+  margin-bottom: 6px;
+}
+
+.featured-section-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding: 0 4px 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.featured-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.featured-card {
+  background: linear-gradient(135deg, rgba(59,130,246,0.06), rgba(245,158,11,0.04));
+  border: 1px solid rgba(59,130,246,0.15);
+  border-radius: 14px;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  transition: all 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+
+.featured-card::before {
+  content: '★';
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 10px;
+  color: rgba(59,130,246,0.3);
+}
+
+.featured-card:hover {
+  background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(245,158,11,0.07));
+  border-color: rgba(59,130,246,0.25);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(59,130,246,0.1);
+}
+
+.featured-card.live {
+  border-color: rgba(239,68,68,0.3);
+  animation: livePulse 2s ease-in-out infinite;
+}
+
+.featured-league-logo { flex-shrink: 0; }
+.featured-league-logo svg { width: 28px; height: 28px; }
+
+.featured-teams {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.featured-team {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.featured-team-crest {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: 'Oswald', sans-serif;
+}
+
+.featured-score {
+  text-align: center;
+  min-width: 50px;
+}
+
+.featured-score-text {
+  font-family: 'Oswald', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.featured-score-status {
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  color: var(--gray-400);
+  text-transform: uppercase;
+}
+
+.no-matches {
+  text-align: center;
+  padding: 50px 20px;
+  color: var(--gray-500);
+}
+
+.no-matches-icon {
+  font-size: 44px;
+  margin-bottom: 10px;
+  opacity: 0.3;
+}
+
+.no-matches-text {
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sidebar-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.sidebar-card-header {
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sidebar-card-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.sidebar-card-badge {
+  font-size: 9px;
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.badge-hot {
+  background: var(--gold-dim);
+  color: var(--gold);
+  border: 1px solid rgba(245,158,11,0.2);
+}
+
+.badge-new {
+  background: var(--green-dim);
+  color: var(--green);
+  border: 1px solid rgba(34,217,127,0.12);
+}
+
+/* Standings */
+.standings-mini { padding: 8px 12px; }
+
+.standing-row {
+  display: grid;
+  grid-template-columns: 26px 1fr 32px 32px 32px 40px;
+  align-items: center;
+  padding: 8px 6px;
+  border-bottom: 1px solid rgba(255,255,255,0.015);
+  font-size: 13px;
+  gap: 4px;
+}
+
+.standing-row:hover {
+  background: rgba(255,255,255,0.02);
+  border-radius: 5px;
+}
+
+.standing-row-header {
+  color: var(--gray-500);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.standing-pos {
+  text-align: center;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--gray-400);
+}
+
+.standing-row:nth-child(-n+5) .standing-pos { color: var(--green); }
+.standing-row:nth-last-child(-n+3) .standing-pos { color: var(--accent); }
+
+.standing-team {
+  font-weight: 600;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.standing-team-link {
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.standing-team-link:hover {
+  color: #818cf8;
+}
+
+.standing-val {
+  text-align: center;
+  color: var(--gray-400);
+  font-size: 13px;
+}
+
+.standing-pts {
+  text-align: center;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--white);
+}
+
+/* News sidebar */
+.news-list { padding: 6px; }
+
+.news-item {
+  padding: 10px 10px;
+  border-radius: 8px;
+  margin-bottom: 2px;
+  transition: all 0.2s;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+.news-item:last-child { border-bottom: none; }
+
+.news-item:hover {
+  background: rgba(255,255,255,0.03);
+}
+
+.news-item-top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.news-league-logo {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+.news-league-logo svg {
+  width: 100%;
+  height: 100%;
+}
+
+.news-tag {
+  font-family: 'Oswald', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.news-date {
+  font-size: 10px;
+  color: var(--gray-500);
+  margin-left: auto;
+}
+
+.news-title {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--gray-200);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.news-bottom {
+  display: flex;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.news-comments {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--gray-500);
+  transition: color 0.2s;
+}
+
+.news-item:hover .news-comments { color: var(--gray-300); }
+
+.news-all-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px 16px;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  font-family: 'Oswald', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.news-all-link:hover {
+  background: rgba(59,130,246,0.06);
+  color: #60A5FA;
+}
+
+.news-all-link svg {
+  transition: transform 0.2s;
+}
+
+.news-all-link:hover svg {
+  transform: translateX(3px);
+}
+
+/* Standings Tabs */
+.standings-tabs {
+  display: flex;
+  gap: 2px;
+  padding: 8px 10px 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.standings-tabs::-webkit-scrollbar { display: none; }
+
+.standings-tab {
+  font-family: 'Oswald', sans-serif;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border: 1px solid rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.02);
+  color: var(--gray-500);
+  cursor: pointer;
+  border-radius: 14px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.standings-tab:hover { color: var(--gray-300); background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.08); }
+.standings-tab.active { color: var(--white); background: rgba(59,130,246,0.12); border-color: rgba(59,130,246,0.2); }
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .main-layout {
+    grid-template-columns: 1fr;
+    padding: 14px;
+  }
+  .main-layout > .sidebar-left { order: 2; }
+  .main-layout > .calendar-section { order: 1; }
+  .main-layout > .sidebar-right { order: 3; }
+  .sidebar-left, .sidebar-right {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .sidebar-left .sidebar-card,
+  .sidebar-right .sidebar-card {
+    flex: 1;
+    min-width: 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header { padding: 0 12px; }
+  .header-inner { height: 52px; }
+  .logo-icon { width: 30px; height: 30px; }
+  .logo-icon .logo-face svg { width: 20px; height: 20px; }
+  .logo-icon .logo-face.is-emoji { font-size: 16px; }
+  .logo-text { font-size: 16px; letter-spacing: 1px; }
+  .logo-sub { font-size: 8px; letter-spacing: 2px; }
+  .logo { gap: 8px; }
+  .season-badge { font-size: 10px; padding: 4px 8px; }
+  .season-badge .chevron { font-size: 7px; }
+  .season-dropdown { min-width: 110px; }
+  .season-option { font-size: 11px; padding: 6px 10px; }
+  .lang-btn { font-size: 10px; padding: 4px 10px; }
+  .header-right { gap: 6px; }
+
+  .auth-btn span { display: none; }
+  .auth-btn { padding: 6px 8px; }
+  .auth-popup { padding: 28px 20px 22px; }
+  .auth-popup-title { font-size: 18px; }
+  .auth-popup-icon { font-size: 28px; }
+
+  .league-bar { padding: 0 8px; top: 52px; }
+  .league-bar-inner { height: 44px; gap: 3px; }
+  .league-tab { padding: 6px 10px; font-size: 11px; gap: 5px; }
+  .league-separator { margin: 0 2px; height: 18px; }
+
+  .main-layout { padding: 10px 8px; gap: 14px; }
+
+  .calendar-toolbar { flex-direction: column; align-items: stretch; gap: 10px; }
+  .calendar-toolbar > div:last-child { justify-content: space-between; }
+  .calendar-title { font-size: 20px; }
+  .view-btn { padding: 6px 12px; font-size: 11px; }
+  .nav-btn { width: 32px; height: 32px; font-size: 12px; }
+  .today-btn { padding: 6px 12px; font-size: 10px; }
+
+  .month-grid { grid-auto-rows: minmax(70px, 1fr); }
+  .month-header-cell { padding: 6px 2px; font-size: 10px; letter-spacing: 1px; }
+  .month-day { padding: 4px 3px; min-height: 70px; }
+  .month-day-number { font-size: 11px; }
+  .match-pill { font-size: 7px; padding: 1px 3px; gap: 2px; }
+  .pill-league-logo { width: 9px; height: 9px; }
+
+  .week-day-row { grid-template-columns: 60px 1fr; min-height: 56px; }
+  .week-day-label { padding: 8px 4px; }
+  .week-day-name { font-size: 10px; letter-spacing: 1px; }
+  .week-day-num { font-size: 20px; }
+  .week-matches { padding: 6px 8px; gap: 4px; }
+  .week-match-card { padding: 6px 8px; gap: 6px; font-size: 12px; }
+  .match-time { font-size: 11px; min-width: 36px; }
+  .match-teams { font-size: 11px; }
+  .match-vs { font-size: 9px; margin: 0 3px; }
+  .match-score { font-size: 12px; }
+  .wmc-league-logo { width: 14px; height: 14px; }
+
+  .day-view { padding: 12px 8px; gap: 10px; }
+  .day-header-big { padding: 10px; }
+  .day-header-big .day-number { font-size: 48px; }
+  .day-header-big .day-name { font-size: 11px; }
+  .day-header-big .day-month-year { font-size: 13px; }
+  .day-match-card { padding: 10px; gap: 10px; flex-wrap: wrap; }
+  .day-match-time-block { min-width: 48px; }
+  .day-match-time-block .time { font-size: 16px; }
+  .day-team-name { font-size: 12px; }
+  .day-match-score-block .score { font-size: 18px; }
+
+  .featured-card { padding: 12px; gap: 10px; }
+  .featured-league-logo svg { width: 22px; height: 22px; }
+  .featured-team { font-size: 13px; }
+  .featured-team-crest { width: 22px; height: 22px; font-size: 9px; }
+  .featured-score-text { font-size: 22px; }
+  .featured-score { min-width: 40px; }
+
+  .sidebar-left, .sidebar-right { flex-direction: column; }
+  .sidebar-left .sidebar-card,
+  .sidebar-right .sidebar-card { min-width: 0; }
+
+  .news-item { padding: 8px; }
+  .news-title { font-size: 12px; }
+  .news-league-logo { width: 14px; height: 14px; }
+
+  .standings-mini { font-size: 11px; }
+  .standing-row { padding: 5px 10px; }
+
+  .match-detail-panel { width: 100vw; max-width: 100vw; }
+  .mdp-header { padding: 14px 14px 12px; }
+  .mdp-scoreboard { padding: 16px 14px; }
+  .mdp-team-crest { width: 40px; height: 40px; font-size: 15px; }
+  .mdp-team-name { font-size: 12px; }
+  .mdp-score-big { font-size: 30px; }
+  .mdp-section { padding: 12px 14px; }
+  .mdp-event { font-size: 12px; gap: 8px; }
+  .mdp-event-minute { width: 28px; font-size: 11px; }
+  .mdp-event-icon { width: 20px; height: 20px; font-size: 11px; }
+}
+
+@media (max-width: 380px) {
+  .match-pill { font-size: 6px; }
+  .month-grid { grid-auto-rows: minmax(60px, 1fr); }
+  .month-day { min-height: 60px; padding: 3px 2px; }
+  .month-day-number { font-size: 10px; }
+  .league-tab { padding: 5px 7px; font-size: 10px; }
+  .calendar-title { font-size: 17px; }
+  .week-day-row { grid-template-columns: 48px 1fr; }
+  .week-day-num { font-size: 17px; }
+  .day-header-big .day-number { font-size: 40px; }
+}
+
+/* ===== AUTH BUTTON & POPUP ===== */
+.auth-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(59,130,246,0.2);
+  background: rgba(59,130,246,0.08);
+  color: var(--accent);
+  font-family: 'Oswald', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+.auth-btn:hover {
+  background: rgba(59,130,246,0.14);
+  border-color: rgba(59,130,246,0.35);
+  box-shadow: 0 2px 14px rgba(59,130,246,0.15);
+  transform: translateY(-1px);
+}
+
+.auth-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(6px);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.auth-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.auth-popup {
+  background: #131d2e;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  padding: 36px 32px 28px;
+  width: 380px;
+  max-width: 92vw;
+  text-align: center;
+  position: relative;
+  transform: scale(0.92) translateY(20px);
+  transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.auth-overlay.open .auth-popup {
+  transform: scale(1) translateY(0);
+}
+
+.auth-popup-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  color: var(--gray-400);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.auth-popup-close:hover {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+}
+
+.auth-popup-icon {
+  font-size: 36px;
+  margin-bottom: 12px;
+}
+.auth-ball {
+  display: inline-block;
+  animation: spinBall 8s linear infinite;
+}
+@keyframes spinBall {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.auth-popup-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.auth-popup-subtitle {
+  font-size: 13px;
+  color: var(--gray-400);
+  margin-bottom: 24px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+}
+
+.auth-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--gray-400);
+}
+
+.auth-input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04);
+  color: var(--white);
+  font-size: 15px;
+  font-family: 'Source Sans 3', sans-serif;
+  outline: none;
+  transition: all 0.2s;
+}
+.auth-input::placeholder {
+  color: var(--gray-500);
+}
+.auth-input:focus {
+  border-color: var(--accent);
+  background: rgba(59,130,246,0.04);
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+}
+
+.auth-submit {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), #F59E0B);
+  color: #fff;
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.auth-submit:hover {
+  box-shadow: 0 4px 20px rgba(59,130,246,0.3);
+  transform: translateY(-1px);
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0 16px;
+  color: var(--gray-500);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,0.06);
+}
+
+.auth-socials {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.auth-social-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.auth-social-btn:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.15);
+  transform: translateY(-2px);
+}
+
+.auth-footer {
+  margin-top: 18px;
+  font-size: 10px;
+  color: var(--gray-500);
+  line-height: 1.4;
+}
+
+/* ===== MATCH DETAIL PANEL ===== */
+.match-detail-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  z-index: 200;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  cursor: pointer;
+}
+.match-detail-overlay.open { opacity: 1; }
+
+.match-detail-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 380px;
+  max-width: 90vw;
+  height: 100vh;
+  background: #101826;
+  border-left: 1px solid rgba(255,255,255,0.08);
+  z-index: 201;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  cursor: default;
+}
+.match-detail-panel.open { transform: translateX(0); }
+
+.mdp-header {
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mdp-league {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.mdp-league svg { width: 20px; height: 20px; }
+
+.mdp-close {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04);
+  color: var(--gray-300);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.mdp-close:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+.mdp-scoreboard {
+  padding: 24px 20px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.mdp-teams-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.mdp-team {
+  flex: 1;
+  text-align: center;
+}
+
+.mdp-team-crest {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mdp-team-crest svg {
+  width: 100%;
+  height: 100%;
+}
+
+.mdp-team-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.mdp-score-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.mdp-score-big {
+  font-family: 'Oswald', sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: 4px;
+}
+
+.mdp-status-label {
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 2px 10px;
+  border-radius: 6px;
+}
+
+.mdp-status-ft {
+  background: rgba(255,255,255,0.06);
+  color: var(--gray-300);
+}
+
+.mdp-status-live {
+  background: rgba(239,68,68,0.15);
+  color: #EF4444;
+}
+
+.mdp-info-row {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding-top: 12px;
+  font-size: 11px;
+  color: var(--gray-400);
+}
+
+.mdp-info-item { display: flex; align-items: center; gap: 4px; }
+
+.mdp-section {
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.mdp-section-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  margin-bottom: 12px;
+}
+
+.mdp-event {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0;
+  font-size: 13px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+.mdp-event:last-child { border-bottom: none; }
+
+.mdp-event-minute {
+  font-family: 'Oswald', sans-serif;
+  font-size: 12px;
+  color: var(--gray-400);
+  width: 32px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.mdp-event-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.mdp-event-icon.goal { background: rgba(34,217,127,0.12); }
+.mdp-event-icon.yellow { background: rgba(255,200,0,0.15); }
+.mdp-event-icon.red { background: rgba(255,50,50,0.15); }
+.mdp-event-icon.sub { background: rgba(100,100,255,0.12); }
+
+.mdp-event-text {
+  flex: 1;
+  color: var(--gray-200);
+}
+
+.mdp-event-team {
+  font-size: 10px;
+  color: var(--gray-500);
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.mdp-referee-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.mdp-ref-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: rgba(255,255,255,0.02);
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.04);
+}
+.mdp-ref-role {
+  font-size: 11px;
+  color: var(--gray-400);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+.mdp-ref-name {
+  font-size: 13px;
+  color: var(--gray-200);
+  font-weight: 500;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.15); }
+
+/* Pulse */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes livePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); }
+  50% { box-shadow: 0 0 8px 1px rgba(239,68,68,0.2); }
+}
+
+@keyframes liveDot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #EF4444;
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.2);
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #EF4444;
+  animation: liveDot 1.2s ease-in-out infinite;
+}
+
+.week-match-card.live {
+  border: 1px solid rgba(239,68,68,0.25);
+  background: rgba(239,68,68,0.05);
+}
+.week-match-card.played {
+  background: rgba(99,102,241,0.06);
+  border: 1px solid rgba(99,102,241,0.12);
+}
+.week-match-card.played .match-score {
+  color: #a5b4fc;
+  font-weight: 600;
+}
+
+.day-match-card.live {
+  border-left: 3px solid #EF4444 !important;
+  background: rgba(239,68,68,0.04);
+}
+.day-match-card.played {
+  background: rgba(99,102,241,0.04);
+}
+.day-match-card.played .score {
+  color: #a5b4fc;
+}
+
+.day-match-card.live .score {
+  color: var(--accent) !important;
+}
+
+/* League Logos */
+.league-logo {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+
+.league-logo svg {
+  width: 100%;
+  height: 100%;
+}
+
+.league-tab .league-logo {
+  width: 24px;
+  height: 24px;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.3));
+}
+
+.league-tab:hover .league-logo {
+  transform: scale(1.1);
+}
+
+.league-tab.active .league-logo {
+  transform: scale(1.15);
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+}
+
+.day-league-logo {
+  width: 20px;
+  height: 20px;
+}
+
+.day-league-logo svg {
+  width: 100%;
+  height: 100%;
+}
+
+.standings-tab .league-logo {
+  width: 16px;
+  height: 16px;
+}
+
+.standings-header-logo {
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+}
+
+.standings-header-logo svg {
+  width: 100%;
+  height: 100%;
+}
+
+.active-league-chip .chip-logo {
+  width: 14px;
+  height: 14px;
+  display: inline-flex;
+}
+
+.active-league-chip .chip-logo svg {
+  width: 100%;
+  height: 100%;
+}
+
+.pill-league-logo {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  display: inline-flex;
+}
+
+.pill-league-logo svg {
+  width: 100%;
+  height: 100%;
+}
+
+.wmc-league-logo {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.wmc-league-logo svg {
+  width: 100%;
+  height: 100%;
+}
+</style>
+</head>
+<body>
+
+<div class="bg-orbs">
+  <div class="bg-orb bg-orb--1"></div>
+  <div class="bg-orb bg-orb--2"></div>
+  <div class="bg-orb bg-orb--3"></div>
+  <div class="bg-orb bg-orb--4"></div>
+  <div class="bg-orb bg-orb--5"></div>
+</div>
+<div class="bg-scanline"></div>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-icon" id="logoIcon">
+        <div class="logo-face is-emoji active" data-idx="0">⚽</div>
+        <div class="logo-face" data-idx="1" data-league="epl"></div>
+        <div class="logo-face" data-idx="2" data-league="laliga"></div>
+        <div class="logo-face" data-idx="3" data-league="seriea"></div>
+        <div class="logo-face" data-idx="4" data-league="bundesliga"></div>
+        <div class="logo-face" data-idx="5" data-league="ligue1"></div>
+      </div>
+      <div>
+        <div class="logo-text">ТОЛЬКО ФУТБОЛ</div>
+        <div class="logo-sub">Матчи · Новости · Статистика</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="season-selector" id="seasonSelector">
+        <button class="season-badge" id="seasonBadge" onclick="toggleSeasonDropdown()">
+          <span style="opacity:0.6;font-size:0.85em;margin-right:4px">Сезон</span>
+          <span id="seasonLabel">2025 / 26</span>
+          <span class="chevron">▼</span>
+        </button>
+        <div class="season-dropdown" id="seasonDropdown"></div>
+      </div>
+      <button class="auth-btn" id="authBtn" onclick="openAuthPopup()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span id="authBtnText">Войти</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Auth Popup -->
+<div class="auth-overlay" id="authOverlay" onclick="closeAuthPopup()">
+  <div class="auth-popup" onclick="event.stopPropagation()">
+    <button class="auth-popup-close" onclick="closeAuthPopup()">✕</button>
+    <div class="auth-popup-icon"><span class="auth-ball">⚽</span></div>
+    <div class="auth-popup-title" id="authPopupTitle">Вход в ТОЛЬКО ФУТБОЛ</div>
+    <div class="auth-popup-subtitle" id="authPopupSubtitle">Следите за любимыми командами и лигами</div>
+    <div class="auth-form">
+      <label class="auth-label" id="authLabel">Почта или телефон</label>
+      <input class="auth-input" id="authInput" type="text" placeholder="+7 ... или email@example.com" autocomplete="email">
+      <button class="auth-submit" id="authSubmit" onclick="submitAuth()">
+        <span id="authSubmitText">Продолжить</span>
+      </button>
+    </div>
+    <div class="auth-divider"><span>или</span></div>
+    <div class="auth-socials">
+      <button class="auth-social-btn" onclick="submitAuth()"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg></button>
+      <button class="auth-social-btn" onclick="submitAuth()"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.337-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z"/></svg></button>
+    </div>
+    <div class="auth-footer" id="authFooter">Нажимая «Продолжить», вы принимаете условия использования</div>
+  </div>
+</div>
+
+<div class="league-bar">
+  <div class="league-bar-inner" id="leagueTabs"></div>
+</div>
+
+<div class="main-layout" id="app"></div>
+
+<script>
+// League logo SVGs — stylized iconic representations
+const LEAGUE_LOGOS = {
+  epl: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="12" fill="#3D195B"/><g transform="translate(2.5, 2) scale(0.8)" fill="#fff"><path d="M11.176 0s-.681 1.938-.867 2.527C9.844 2.202 8.386 1.194 7.78.775c.14.806.356 2.124.403 2.403-.124-.093-.821-.698-1.875-1.194.589.682 1.008 1.736 1.271 2.588a10.566 10.566 0 0 1 5.238-1.379c.977 0 1.94.14 2.854.403.093-.884.279-1.968.682-2.758-.915.728-1.474 1.503-1.551 1.596-.031-.186-.093-1.52-.17-2.434-.372.403-1.8 2.016-2.063 2.264C12.384 1.938 11.176 0 11.176 0zm1.674 3.86c-1.674 0-3.3.386-4.696 1.115.713.046 1.224.668 1.395 1.164-.558-.45-1.442-.667-1.985-.078-.511.589-.464 1.688.047 2.572-1.193-.605-1.194-2.185-.775-2.867A10.392 10.392 0 0 0 3.61 9.594l1.07.172c-1.24 1.426-2.107 3.953-2.107 5.146l1.75-.543c-.31 1.054-.401 4.602.653 6.385 0 0 1.38-.96 2.945-3.363.65 2.17.356 3.985 0 5.767 2.82 1.581 6.09.696 8.012-.683l.357 1.35c2.248-1.489 3.488-3.628 3.72-6.124l.837.93c1.286-3.829.28-6.883-1.565-9.502l-.078.637-.79-.87s.17-.077.31-.263c.03-.078-.046-.495-.371-.774-.31.078-.56.264-.684.45a3.222 3.222 0 0 0-.93-.543c.062.077.604.79.65 1.007.466.388 1.102.837 1.52 1.395-.34-.403-1.984-.497-2.728-.078 0 0-.744-.868-1.426-1.473-.14-.511.326-.96.326-.96s-.48-.03-.93.42c-.682-.512-1.55-.745-1.55-.745-.961.14-1.612.82-1.612.82.217.14.512.327.776.42.511.217 1.006.139 1.332.139.263 0 .636.078.636.078s.635.495 1.565 1.565c-1.426-.574-2.915.062-3.969-.45-1.24-.62-1.146-1.595-1.146-1.595s-.836-.11-.836-.141c0 0 .618-.82 1.548-1.1l-.464-.402c.558-.465 1.534-1.085 3.115-1.24 0 0 .683.262 2.11 1.285.232-.326.308-1.008.308-1.008.728.248 2.217 1.333 2.806 1.984-.325-.759-.559-1.223-.636-2.013-.357-.357-1.24-1.101-3.069-1.551.295.605.264 1.115.264 1.115-.34-.45-1.055-1.146-1.55-1.332-.295-.015-.605-.047-.93-.047zm3.271 7.068a4.323 4.323 0 0 0 1.256.697v1.348c-.465.403-1.985 1.675-3.008 1.566-.573-1.1-1.115-2.107-1.115-2.107s1.565-1.318 2.867-1.504zm2.975.031c.465 1.131.59 2.48.078 3.379-.28-.605-.636-.947-1.008-1.35v-1.347s.418-.264.93-.682zm-.977 3.395c.465.511.559 1.068.559 1.068-.202 1.131-.836 1.846-1.301 2.14.046-.821-.172-1.519-.172-1.519-.34.372-1.13.743-1.596.836l-.697-1.3c.822-.032 2.201-1.194 2.201-1.194l1.006-.031z"/></g></svg>`,
+  laliga: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="12" fill="#EE2524"/><g transform="translate(4.5, 4) scale(0.625)"><path d="M2 2 L2 22 L10 22 L10 18 L6 18 L6 2 Z" fill="#fff"/><path d="M12 2 L12 22 L20 22 L20 18 L16 18 L16 2 Z" fill="#fff"/><path d="M10 18 L10 22 L12 22 L12 18 Z" fill="rgba(255,255,255,0.4)"/></g></svg>`,
+  seriea: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="12" fill="#024494"/><g transform="translate(5, 3.5)"><path d="M7 0 L14 14 L11.5 14 L10 10.5 L4 10.5 L2.5 14 L0 14 Z" fill="#fff"/><path d="M7 3.5 L4.8 9 L9.2 9 Z" fill="#024494"/><path d="M7 14 L3 14 L7 17 L11 14 L7 14Z" fill="#1B3C7B" opacity="0.6"/><rect x="1" y="15" width="12" height="0.8" rx="0.4" fill="#008C45"/><rect x="1" y="16" width="12" height="0.8" rx="0.4" fill="#fff"/><rect x="1" y="17" width="12" height="0.8" rx="0.4" fill="#CE2B37"/></g></svg>`,
+  bundesliga: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="24" rx="4" fill="#D20515"/><g fill="#fff"><circle cx="14.5" cy="5.5" r="2"/><path d="M17.2 8.5c-.3-.5-.8-1-1.5-1.3l-2-.8c-.3-.1-.5 0-.7.2L11.5 9l-3-1.2c-.4-.2-.8 0-.9.4-.2.4 0 .8.4.9l3.5 1.4.5 2.5-2.8 3c-.3.3-.3.7 0 1l.1.1c.3.3.7.3 1 0l3.2-3.4 1.5 1.2v3.3c0 .4.3.8.8.8s.8-.3.8-.8v-3.8c0-.2-.1-.4-.2-.5l-1.8-1.5.8-2 1.2.8c.2.1.4.2.6.2h2c.4 0 .8-.3.8-.8s-.5-.7-.9-.7h-1.5z"/><circle cx="8" cy="7" r="1.5" fill="none" stroke="#fff" stroke-width="0.8"/><path d="M7.2 7 L8 7.5 8.8 7 M7.5 7.8 L8 8.3 8.5 7.8" fill="none" stroke="#fff" stroke-width="0.4"/><text x="12" y="22.5" text-anchor="middle" fill="#fff" font-size="3.2" font-family="Arial,sans-serif" font-weight="700" letter-spacing="0.2">BUNDESLIGA</text></g></svg>`,
+  ligue1: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="12" fill="#091C3E"/><circle cx="12" cy="12" r="10" fill="none" stroke="#CEFA04" stroke-width="1.8"/><circle cx="12" cy="12" r="7.5" fill="none" stroke="rgba(206,250,4,0.2)" stroke-width="0.6"/><text x="8.5" y="14" fill="#fff" font-size="9" font-family="Arial,sans-serif" font-weight="800">L</text><text x="14" y="17" fill="#CEFA04" font-size="12" font-family="Arial,sans-serif" font-weight="900">1</text></svg>`,
+  rpl: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="12" fill="#D52B1E"/><circle cx="12" cy="12" r="10.8" fill="none" stroke="#fff" stroke-width="0.5" opacity="0.25"/><path d="M12 3.5 L15 7 L19.5 7.5 L16.5 11 L17 15.5 L12 13.5 L7 15.5 L7.5 11 L4.5 7.5 L9 7Z" fill="#fff"/><path d="M12 5.5 L14 8 L17.5 8.3 L15.2 11 L15.6 14.3 L12 12.7 L8.4 14.3 L8.8 11 L6.5 8.3 L10 8Z" fill="#D52B1E"/><circle cx="12" cy="10" r="1.8" fill="#fff"/><path d="M11.2 9.5 L12 8.5 L12.8 9.5 L12 10.5Z" fill="#D52B1E"/><rect x="6" y="17" width="12" height="0.6" rx="0.3" fill="#fff" opacity="0.2"/><rect x="6" y="18.2" width="12" height="0.6" rx="0.3" fill="#0039A6" opacity="0.5"/><rect x="6" y="19.4" width="12" height="0.6" rx="0.3" fill="#D52B1E" opacity="0.5"/></svg>`,
+  ucl: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="11.5" fill="#fff"/><path d="M12.00,3.30 L12.76,5.45 L15.04,5.51 L13.24,6.90 L13.88,9.09 L12.00,7.80 L10.12,9.09 L10.76,6.90 L8.96,5.51 L11.24,5.45Z M18.46,7.37 L18.41,9.38 L20.30,10.10 L18.37,10.68 L18.27,12.69 L17.12,11.03 L15.18,11.57 L16.40,9.96 L15.29,8.28 L17.20,8.94Z M15.35,13.09 L16.36,14.57 L18.10,14.14 L17.00,15.55 L17.94,17.07 L16.26,16.47 L15.10,17.83 L15.16,16.04 L13.50,15.37 L15.22,14.87Z M12.00,15.70 L12.53,17.27 L14.19,17.29 L12.86,18.28 L13.35,19.86 L12.00,18.90 L10.65,19.86 L11.14,18.28 L9.81,17.29 L11.47,17.27Z M8.65,13.09 L8.78,14.87 L10.50,15.37 L8.84,16.04 L8.90,17.83 L7.74,16.47 L6.06,17.07 L7.00,15.55 L5.90,14.14 L7.64,14.57Z M5.54,7.37 L6.80,8.94 L8.71,8.28 L7.60,9.96 L8.82,11.57 L6.88,11.03 L5.73,12.69 L5.63,10.68 L3.70,10.10 L5.59,9.38Z M16.31,3.23 L16.50,4.51 L17.78,4.75 L16.62,5.33 L16.79,6.62 L15.88,5.69 L14.71,6.25 L15.31,5.10 L14.41,4.15 L15.69,4.37Z M7.69,3.23 L8.31,4.37 L9.59,4.15 L8.69,5.10 L9.29,6.25 L8.12,5.69 L7.21,6.62 L7.38,5.33 L6.22,4.75 L7.50,4.51Z" fill="#1a1a5e"/></svg>`,
+  uel: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="12" fill="#F26522"/><path d="M12.00,3.00 L13.09,7.87 L16.88,5.62 L14.63,9.41 L19.50,10.50 L14.63,11.59 L16.88,15.38 L13.09,13.13 L12.00,18.00 L10.91,13.13 L7.12,15.38 L9.37,11.59 L4.50,10.50 L9.37,9.41 L7.12,5.62 L10.91,7.87Z" fill="#fff"/><path d="M5 17 Q8 15 12 16 Q16 17 19 15" fill="none" stroke="#fff" stroke-width="0.8" stroke-linecap="round" opacity="0.6"/><circle cx="12" cy="20" r="0.6" fill="#fff" opacity="0.5"/></svg>`
+};
+
+const LEAGUES = {
+  epl: {
+    id: 'epl',
+    name: 'Английская Премьер-лига',
+    shortName: 'АПЛ',
+    flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
+    color: '#3D195B',
+    colorBright: '#9B59B6',
+    glow: 'rgba(61,25,91,0.35)',
+    logo: LEAGUE_LOGOS.epl,
+  },
+  laliga: {
+    id: 'laliga',
+    name: 'Ла Лига (Испания)',
+    shortName: 'Ла Лига',
+    flag: '🇪🇸',
+    color: '#EE2524',
+    colorBright: '#FF4444',
+    glow: 'rgba(238,37,36,0.3)',
+    logo: LEAGUE_LOGOS.laliga,
+  },
+  seriea: {
+    id: 'seriea',
+    name: 'Серия А (Италия)',
+    shortName: 'Серия А',
+    flag: '🇮🇹',
+    color: '#008C45',
+    colorBright: '#2ECC71',
+    glow: 'rgba(0,140,69,0.3)',
+    logo: LEAGUE_LOGOS.seriea,
+  },
+  bundesliga: {
+    id: 'bundesliga',
+    name: 'Бундеслига (Германия)',
+    shortName: 'Бундес',
+    flag: '🇩🇪',
+    color: '#D20515',
+    colorBright: '#E74C3C',
+    glow: 'rgba(210,5,21,0.3)',
+    logo: LEAGUE_LOGOS.bundesliga,
+  },
+  ligue1: {
+    id: 'ligue1',
+    name: 'Лига 1 (Франция)',
+    shortName: 'Лига 1',
+    flag: '🇫🇷',
+    color: '#091C3E',
+    colorBright: '#3498DB',
+    glow: 'rgba(9,28,62,0.4)',
+    logo: LEAGUE_LOGOS.ligue1,
+  },
+  rpl: {
+    id: 'rpl',
+    name: 'Российская Премьер-Лига',
+    shortName: 'РПЛ',
+    flag: '🇷🇺',
+    color: '#CE2029',
+    colorBright: '#E74C3C',
+    glow: 'rgba(206,32,41,0.3)',
+    logo: LEAGUE_LOGOS.rpl,
+  },
+  ucl: {
+    id: 'ucl',
+    name: 'Лига Чемпионов УЕФА',
+    shortName: 'ЛЧ',
+    flag: '🏆',
+    color: '#0D1541',
+    colorBright: '#6366F1',
+    glow: 'rgba(99,102,241,0.3)',
+    logo: LEAGUE_LOGOS.ucl,
+    isCup: true,
+  },
+  uel: {
+    id: 'uel',
+    name: 'Лига Европы УЕФА',
+    shortName: 'ЛЕ',
+    flag: '🏆',
+    color: '#F26522',
+    colorBright: '#F59E0B',
+    glow: 'rgba(245,158,11,0.3)',
+    logo: LEAGUE_LOGOS.uel,
+    isCup: true,
+  }
+};
+
+const MATCHES = {
+  epl: [
+    // Past
+    {date:'2025-08-15',home:'Man Utd',away:'Aston Villa',time:'20:00',score:'2-1'},
+    {date:'2025-08-16',home:'Arsenal',away:'Wolves',time:'15:00',score:'3-0'},
+    {date:'2025-08-17',home:'Liverpool',away:'Brentford',time:'16:30',score:'2-1'},
+    {date:'2025-08-23',home:'Chelsea',away:'Crystal Palace',time:'15:00',score:'1-0'},
+    {date:'2025-09-13',home:'Man City',away:'Arsenal',time:'17:30',score:'1-1'},
+    {date:'2025-09-20',home:'Liverpool',away:'Bournemouth',time:'15:00',score:'3-0'},
+    {date:'2025-09-27',home:'Arsenal',away:'Man Utd',time:'15:00',score:'2-0'},
+    {date:'2025-10-04',home:'Tottenham',away:'Liverpool',time:'17:30',score:'0-1'},
+    {date:'2025-10-18',home:'Chelsea',away:'Arsenal',time:'15:00',score:'0-2'},
+    {date:'2025-10-25',home:'Man Utd',away:'Brighton',time:'17:30',score:'3-1'},
+    {date:'2025-11-01',home:'Arsenal',away:'Chelsea',time:'12:30',score:'2-0'},
+    {date:'2025-11-08',home:'Liverpool',away:'Man City',time:'17:30',score:'2-2'},
+    {date:'2025-11-22',home:'Man City',away:'Tottenham',time:'15:00',score:'2-2'},
+    {date:'2025-11-29',home:'Arsenal',away:'Everton',time:'15:00',score:'4-0'},
+    {date:'2025-12-06',home:'Tottenham',away:'Chelsea',time:'15:00',score:'1-1'},
+    {date:'2025-12-13',home:'Liverpool',away:'Fulham',time:'15:00',score:'2-0'},
+    {date:'2025-12-20',home:'Arsenal',away:'Crystal Palace',time:'17:30',score:'3-0'},
+    {date:'2025-12-26',home:'Chelsea',away:'Fulham',time:'15:00',score:'1-2'},
+    {date:'2025-12-26',home:'Man City',away:'Everton',time:'15:00',score:'2-0'},
+    {date:'2025-12-28',home:'Liverpool',away:'Leeds',time:'15:00',score:'3-1'},
+    {date:'2026-01-01',home:'Crystal Palace',away:'Fulham',time:'17:30',score:'1-1'},
+    {date:'2026-01-03',home:'Aston Villa',away:"Nott'm Forest",time:'15:00',score:'3-1'},
+    {date:'2026-01-03',home:'Bournemouth',away:'Arsenal',time:'15:00',score:'2-3'},
+    {date:'2026-01-04',home:'Man City',away:'Chelsea',time:'16:30',score:'1-1'},
+    {date:'2026-01-17',home:'Man Utd',away:'Man City',time:'17:30',score:'2-0'},
+    {date:'2026-01-24',home:'Arsenal',away:'Brighton',time:'15:00',score:'2-1'},
+    {date:'2026-01-31',home:'Liverpool',away:'Wolves',time:'15:00',score:'3-0'},
+    {date:'2026-02-01',home:'Crystal Palace',away:'Man Utd',time:'15:00',score:'1-1'},
+    // MW25
+    {date:'2026-02-06',home:'Leeds',away:"Nott'm Forest",time:'20:00',score:'1-0'},
+    {date:'2026-02-07',home:'Man Utd',away:'Tottenham',time:'12:30',score:'2-0',featured:true},
+    {date:'2026-02-07',home:'Arsenal',away:'Sunderland',time:'15:00',score:'3-1'},
+    {date:'2026-02-07',home:'Fulham',away:'Everton',time:'15:00',score:'2-1'},
+    {date:'2026-02-07',home:'Wolves',away:'Chelsea',time:'15:00',score:'0-1'},
+    {date:'2026-02-07',home:'Newcastle',away:'Brentford',time:'17:30',score:'1-2'},
+    {date:'2026-02-08',home:'Brighton',away:'Crystal Palace',time:'14:00',score:'1-1'},
+    {date:'2026-02-08',home:'Liverpool',away:'Man City',time:'16:30',score:'1-2',featured:true},
+    // MW26 — LIVE
+    {date:'2026-02-10',home:'Chelsea',away:'Leeds',time:'19:30',score:null,live:{score:'1-0',minute:62},featured:true},
+    {date:'2026-02-10',home:'Everton',away:'Bournemouth',time:'19:30',score:null,live:{score:'0-0',minute:62}},
+    {date:'2026-02-10',home:'Tottenham',away:'Newcastle',time:'19:30',score:null,live:{score:'2-1',minute:64}},
+    {date:'2026-02-10',home:'West Ham',away:'Man Utd',time:'20:15',score:null},
+    {date:'2026-02-11',home:'Aston Villa',away:'Brighton',time:'19:30',score:null},
+    {date:'2026-02-11',home:'Crystal Palace',away:'Burnley',time:'19:30',score:null},
+    {date:'2026-02-11',home:'Man City',away:'Fulham',time:'19:30',score:null},
+    {date:'2026-02-11',home:'Sunderland',away:'Liverpool',time:'20:15',score:null},
+    {date:'2026-02-12',home:'Brentford',away:'Arsenal',time:'20:00',score:null},
+    // MW27+
+    {date:'2026-02-21',home:'Chelsea',away:'Burnley',time:'15:00',score:null},
+    {date:'2026-02-21',home:'Man City',away:'Newcastle',time:'20:00',score:null},
+    {date:'2026-02-22',home:'Tottenham',away:'Arsenal',time:'16:30',score:null,featured:true},
+    {date:'2026-02-23',home:'Everton',away:'Man Utd',time:'16:00',score:null},
+    {date:'2026-03-01',home:'Brighton',away:"Nott'm Forest",time:'14:00',score:null},
+    {date:'2026-03-07',home:'Arsenal',away:'Man City',time:'17:30',score:null,featured:true},
+    {date:'2026-03-14',home:'Liverpool',away:'Chelsea',time:'15:00',score:null},
+    {date:'2026-03-21',home:'Man Utd',away:'Arsenal',time:'12:30',score:null},
+    {date:'2026-04-04',home:'Chelsea',away:'Man Utd',time:'15:00',score:null},
+    {date:'2026-04-11',home:'Arsenal',away:'Liverpool',time:'17:30',score:null},
+    {date:'2026-04-18',home:'Man City',away:'Tottenham',time:'15:00',score:null},
+    {date:'2026-04-25',home:'Liverpool',away:'Newcastle',time:'15:00',score:null},
+    {date:'2026-05-09',home:'Arsenal',away:'Aston Villa',time:'15:00',score:null},
+    {date:'2026-05-16',home:'Man City',away:'Chelsea',time:'15:00',score:null},
+  ],
+  laliga: [
+    {date:'2025-08-16',home:'Barcelona',away:'Valencia',time:'21:00',score:'3-1'},
+    {date:'2025-08-17',home:'Real Madrid',away:'Mallorca',time:'21:00',score:'2-0'},
+    {date:'2025-09-14',home:'Atlético Madrid',away:'Real Madrid',time:'21:00',score:'1-1'},
+    {date:'2025-09-28',home:'Barcelona',away:'Atlético Madrid',time:'21:00',score:'2-1'},
+    {date:'2025-10-05',home:'Real Madrid',away:'Barcelona',time:'21:00',score:'0-4',featured:true},
+    {date:'2025-10-19',home:'Real Sociedad',away:'Athletic Bilbao',time:'18:30',score:'2-2'},
+    {date:'2025-10-26',home:'Villarreal',away:'Barcelona',time:'21:00',score:'1-3'},
+    {date:'2025-11-02',home:'Real Madrid',away:'Valencia',time:'21:00',score:'3-0'},
+    {date:'2025-11-09',home:'Sevilla',away:'Barcelona',time:'21:00',score:'0-1'},
+    {date:'2025-11-23',home:'Real Madrid',away:'Sevilla',time:'21:00',score:'2-0'},
+    {date:'2025-11-30',home:'Atlético Madrid',away:'Barcelona',time:'21:00',score:'1-2'},
+    {date:'2025-12-07',home:'Barcelona',away:'Real Sociedad',time:'18:30',score:'2-0'},
+    {date:'2025-12-14',home:'Real Madrid',away:'Girona',time:'21:00',score:'2-1'},
+    {date:'2025-12-21',home:'Barcelona',away:'Celta Vigo',time:'21:00',score:'3-0'},
+    {date:'2026-01-04',home:'Atlético Madrid',away:'Villarreal',time:'21:00',score:'2-1'},
+    {date:'2026-01-12',home:'Barcelona',away:'Athletic Bilbao',time:'21:00',score:'1-0'},
+    {date:'2026-01-18',home:'Real Madrid',away:'Las Palmas',time:'21:00',score:'3-0'},
+    {date:'2026-01-25',home:'Sevilla',away:'Atlético Madrid',time:'18:30',score:'1-2'},
+    {date:'2026-02-01',home:'Real Madrid',away:'Atlético Madrid',time:'21:00',score:'2-1'},
+    {date:'2026-02-08',home:'Barcelona',away:'Girona',time:'21:00',score:'3-1'},
+    {date:'2026-02-08',home:'Real Sociedad',away:'Sevilla',time:'18:30',score:'1-0'},
+    // Upcoming
+    {date:'2026-02-11',home:'Atlético Madrid',away:'Villarreal',time:'21:00',score:null},
+    {date:'2026-02-11',home:'Athletic Bilbao',away:'Barcelona',time:'21:00',score:null},
+    {date:'2026-02-15',home:'Real Madrid',away:'Real Sociedad',time:'21:00',score:null},
+    {date:'2026-02-15',home:'Villarreal',away:'Sevilla',time:'18:30',score:null},
+    {date:'2026-02-22',home:'Barcelona',away:'Real Madrid',time:'21:00',score:null},
+    {date:'2026-02-22',home:'Atlético Madrid',away:'Celta Vigo',time:'18:30',score:null},
+    {date:'2026-03-01',home:'Real Madrid',away:'Villarreal',time:'21:00',score:null},
+    {date:'2026-03-08',home:'Atlético Madrid',away:'Real Sociedad',time:'21:00',score:null},
+    {date:'2026-03-15',home:'Barcelona',away:'Sevilla',time:'21:00',score:null},
+    {date:'2026-03-22',home:'Real Madrid',away:'Barcelona',time:'21:00',score:null,featured:true},
+    {date:'2026-04-05',home:'Atlético Madrid',away:'Real Madrid',time:'21:00',score:null},
+    {date:'2026-04-12',home:'Barcelona',away:'Valencia',time:'21:00',score:null},
+    {date:'2026-04-19',home:'Real Sociedad',away:'Barcelona',time:'18:30',score:null},
+    {date:'2026-05-03',home:'Real Madrid',away:'Athletic Bilbao',time:'21:00',score:null},
+    {date:'2026-05-17',home:'Barcelona',away:'Atlético Madrid',time:'21:00',score:null},
+  ],
+  seriea: [
+    {date:'2025-08-17',home:'Inter',away:'Genoa',time:'20:45',score:'2-0'},
+    {date:'2025-08-18',home:'Napoli',away:'Verona',time:'20:45',score:'3-1'},
+    {date:'2025-09-14',home:'Juventus',away:'Napoli',time:'20:45',score:'1-0'},
+    {date:'2025-09-21',home:'AC Milan',away:'Inter',time:'20:45',score:'0-2'},
+    {date:'2025-09-28',home:'Napoli',away:'AC Milan',time:'20:45',score:'2-1'},
+    {date:'2025-10-05',home:'Inter',away:'Juventus',time:'20:45',score:'1-1',featured:true},
+    {date:'2025-10-19',home:'Roma',away:'Inter',time:'18:00',score:'1-2'},
+    {date:'2025-10-26',home:'AC Milan',away:'Napoli',time:'20:45',score:'0-1'},
+    {date:'2025-11-02',home:'Juventus',away:'Atalanta',time:'20:45',score:'2-1'},
+    {date:'2025-11-09',home:'Inter',away:'Napoli',time:'20:45',score:'1-1'},
+    {date:'2025-11-23',home:'Napoli',away:'Roma',time:'20:45',score:'2-0'},
+    {date:'2025-11-30',home:'Atalanta',away:'Inter',time:'20:45',score:'1-3'},
+    {date:'2025-12-07',home:'AC Milan',away:'Juventus',time:'20:45',score:'1-0'},
+    {date:'2025-12-14',home:'Napoli',away:'Lazio',time:'20:45',score:'3-1'},
+    {date:'2025-12-21',home:'Inter',away:'AC Milan',time:'20:45',score:'2-0'},
+    {date:'2026-01-05',home:'Juventus',away:'AC Milan',time:'20:45',score:'2-1'},
+    {date:'2026-01-12',home:'Inter',away:'Atalanta',time:'20:45',score:'3-1'},
+    {date:'2026-01-19',home:'Napoli',away:'Juventus',time:'20:45',score:'1-0'},
+    {date:'2026-01-26',home:'Roma',away:'AC Milan',time:'20:45',score:'1-1'},
+    {date:'2026-02-02',home:'AC Milan',away:'Atalanta',time:'20:45',score:'1-2'},
+    {date:'2026-02-08',home:'Inter',away:'Roma',time:'20:45',score:'3-0'},
+    {date:'2026-02-09',home:'Juventus',away:'Fiorentina',time:'18:00',score:'2-0'},
+    // Upcoming
+    {date:'2026-02-11',home:'Napoli',away:'Inter',time:'20:45',score:null},
+    {date:'2026-02-11',home:'Lazio',away:'Juventus',time:'18:00',score:null},
+    {date:'2026-02-15',home:'AC Milan',away:'Roma',time:'20:45',score:null},
+    {date:'2026-02-15',home:'Atalanta',away:'Napoli',time:'18:00',score:null},
+    {date:'2026-02-22',home:'Inter',away:'Lazio',time:'20:45',score:null},
+    {date:'2026-02-22',home:'Juventus',away:'AC Milan',time:'18:00',score:null},
+    {date:'2026-03-01',home:'Napoli',away:'Atalanta',time:'20:45',score:null},
+    {date:'2026-03-08',home:'AC Milan',away:'Inter',time:'20:45',score:null},
+    {date:'2026-03-15',home:'Juventus',away:'Napoli',time:'20:45',score:null},
+    {date:'2026-03-22',home:'Inter',away:'Juventus',time:'20:45',score:null,featured:true},
+    {date:'2026-04-05',home:'Roma',away:'Napoli',time:'20:45',score:null},
+    {date:'2026-04-12',home:'AC Milan',away:'Lazio',time:'20:45',score:null},
+    {date:'2026-05-03',home:'Inter',away:'Napoli',time:'20:45',score:null},
+    {date:'2026-05-17',home:'Napoli',away:'AC Milan',time:'20:45',score:null},
+  ],
+  bundesliga: [
+    {date:'2025-08-16',home:'Bayern Munich',away:'Wolfsburg',time:'18:30',score:'3-1'},
+    {date:'2025-08-17',home:'Dortmund',away:'Frankfurt',time:'17:30',score:'2-2'},
+    {date:'2025-09-14',home:'Bayern Munich',away:'Dortmund',time:'18:30',score:'2-0',featured:true},
+    {date:'2025-09-20',home:'Leverkusen',away:'Bayern Munich',time:'18:30',score:'1-2'},
+    {date:'2025-09-27',home:'RB Leipzig',away:'Dortmund',time:'18:30',score:'2-1'},
+    {date:'2025-10-05',home:'Dortmund',away:'Bayern Munich',time:'18:30',score:'1-3'},
+    {date:'2025-10-19',home:'Stuttgart',away:'Leverkusen',time:'15:30',score:'0-1'},
+    {date:'2025-10-25',home:'Bayern Munich',away:'RB Leipzig',time:'18:30',score:'2-0'},
+    {date:'2025-11-01',home:'Frankfurt',away:'Bayern Munich',time:'18:30',score:'1-3'},
+    {date:'2025-11-08',home:'Leverkusen',away:'Dortmund',time:'18:30',score:'2-2'},
+    {date:'2025-11-22',home:'Bayern Munich',away:'Stuttgart',time:'18:30',score:'4-0'},
+    {date:'2025-11-29',home:'Dortmund',away:'Leverkusen',time:'18:30',score:'1-0'},
+    {date:'2025-12-07',home:'RB Leipzig',away:'Bayern Munich',time:'18:30',score:'0-2'},
+    {date:'2025-12-14',home:'Bayern Munich',away:'Frankfurt',time:'18:30',score:'3-1'},
+    {date:'2025-12-20',home:'Dortmund',away:'Freiburg',time:'15:30',score:'2-1'},
+    {date:'2026-01-10',home:'Bayern Munich',away:'Leverkusen',time:'18:30',score:'2-1'},
+    {date:'2026-01-17',home:'Dortmund',away:'RB Leipzig',time:'18:30',score:'3-2'},
+    {date:'2026-01-24',home:'Stuttgart',away:'Bayern Munich',time:'18:30',score:'0-1'},
+    {date:'2026-01-31',home:'Frankfurt',away:'Dortmund',time:'18:30',score:'1-1'},
+    {date:'2026-02-07',home:'Bayern Munich',away:'Union Berlin',time:'18:30',score:'3-0'},
+    {date:'2026-02-08',home:'Leverkusen',away:'RB Leipzig',time:'15:30',score:'2-1'},
+    // Upcoming
+    {date:'2026-02-14',home:'Dortmund',away:'Stuttgart',time:'18:30',score:null},
+    {date:'2026-02-14',home:'RB Leipzig',away:'Bayern Munich',time:'15:30',score:null},
+    {date:'2026-02-21',home:'Bayern Munich',away:'Dortmund',time:'18:30',score:null,featured:true},
+    {date:'2026-02-21',home:'Frankfurt',away:'Leverkusen',time:'15:30',score:null},
+    {date:'2026-02-28',home:'Leverkusen',away:'Stuttgart',time:'18:30',score:null},
+    {date:'2026-03-07',home:'Dortmund',away:'Bayern Munich',time:'18:30',score:null},
+    {date:'2026-03-14',home:'RB Leipzig',away:'Leverkusen',time:'18:30',score:null},
+    {date:'2026-03-21',home:'Bayern Munich',away:'Frankfurt',time:'18:30',score:null},
+    {date:'2026-04-04',home:'Stuttgart',away:'Dortmund',time:'18:30',score:null},
+    {date:'2026-04-11',home:'Bayern Munich',away:'Freiburg',time:'18:30',score:null},
+    {date:'2026-05-02',home:'Dortmund',away:'Leverkusen',time:'18:30',score:null},
+    {date:'2026-05-16',home:'Bayern Munich',away:'RB Leipzig',time:'18:30',score:null},
+  ],
+  ligue1: [
+    {date:'2025-08-16',home:'PSG',away:'Le Havre',time:'21:00',score:'4-0'},
+    {date:'2025-08-17',home:'Marseille',away:'Brest',time:'20:45',score:'2-1'},
+    {date:'2025-09-14',home:'Lyon',away:'PSG',time:'21:00',score:'1-3'},
+    {date:'2025-09-21',home:'PSG',away:'Marseille',time:'21:00',score:'3-2',featured:true},
+    {date:'2025-09-28',home:'Monaco',away:'PSG',time:'21:00',score:'1-2'},
+    {date:'2025-10-05',home:'Marseille',away:'Lyon',time:'21:00',score:'2-1'},
+    {date:'2025-10-19',home:'PSG',away:'Lille',time:'21:00',score:'2-0'},
+    {date:'2025-10-26',home:'Nice',away:'PSG',time:'21:00',score:'0-1'},
+    {date:'2025-11-02',home:'PSG',away:'Lyon',time:'21:00',score:'3-0'},
+    {date:'2025-11-09',home:'Marseille',away:'Monaco',time:'21:00',score:'2-0'},
+    {date:'2025-11-23',home:'PSG',away:'Nice',time:'21:00',score:'2-1'},
+    {date:'2025-11-30',home:'Lille',away:'Marseille',time:'21:00',score:'1-1'},
+    {date:'2025-12-07',home:'Monaco',away:'PSG',time:'21:00',score:'0-2'},
+    {date:'2025-12-14',home:'PSG',away:'Rennes',time:'21:00',score:'3-0'},
+    {date:'2025-12-21',home:'Lyon',away:'Marseille',time:'21:00',score:'1-2'},
+    {date:'2026-01-04',home:'PSG',away:'Monaco',time:'21:00',score:'2-0'},
+    {date:'2026-01-11',home:'Marseille',away:'PSG',time:'21:00',score:'0-1'},
+    {date:'2026-01-18',home:'Lyon',away:'Nice',time:'21:00',score:'2-2'},
+    {date:'2026-01-25',home:'Lille',away:'PSG',time:'21:00',score:'1-3'},
+    {date:'2026-02-01',home:'PSG',away:'Strasbourg',time:'21:00',score:'3-0'},
+    {date:'2026-02-08',home:'Monaco',away:'Marseille',time:'21:00',score:'1-1'},
+    {date:'2026-02-08',home:'Lyon',away:'Lille',time:'17:00',score:'2-0'},
+    // Upcoming
+    {date:'2026-02-14',home:'PSG',away:'Marseille',time:'21:00',score:null,featured:true},
+    {date:'2026-02-14',home:'Nice',away:'Lyon',time:'17:00',score:null},
+    {date:'2026-02-21',home:'Marseille',away:'Monaco',time:'21:00',score:null},
+    {date:'2026-02-21',home:'Lille',away:'Nice',time:'17:00',score:null},
+    {date:'2026-02-28',home:'PSG',away:'Lille',time:'21:00',score:null},
+    {date:'2026-03-07',home:'Lyon',away:'PSG',time:'21:00',score:null},
+    {date:'2026-03-14',home:'Monaco',away:'Lille',time:'21:00',score:null},
+    {date:'2026-03-21',home:'Marseille',away:'Lyon',time:'21:00',score:null},
+    {date:'2026-04-04',home:'PSG',away:'Nice',time:'21:00',score:null},
+    {date:'2026-04-11',home:'Monaco',away:'PSG',time:'21:00',score:null},
+    {date:'2026-05-02',home:'PSG',away:'Lyon',time:'21:00',score:null},
+    {date:'2026-05-16',home:'Marseille',away:'PSG',time:'21:00',score:null},
+  ],
+  rpl: [
+    {date:'2025-07-19',home:'Zenit',away:'Spartak',time:'19:00',score:'2-1'},
+    {date:'2025-07-20',home:'CSKA',away:'Dynamo',time:'18:00',score:'1-1'},
+    {date:'2025-07-26',home:'Lokomotiv',away:'Krasnodar',time:'19:00',score:'0-2'},
+    {date:'2025-08-02',home:'Spartak',away:'CSKA',time:'19:00',score:'3-2'},
+    {date:'2025-08-09',home:'Dynamo',away:'Zenit',time:'18:00',score:'0-1'},
+    {date:'2025-08-16',home:'Krasnodar',away:'Spartak',time:'19:00',score:'1-1'},
+    {date:'2025-08-23',home:'Zenit',away:'Lokomotiv',time:'19:00',score:'3-0'},
+    {date:'2025-09-13',home:'Spartak',away:'Dynamo',time:'18:00',score:'2-0'},
+    {date:'2025-09-20',home:'CSKA',away:'Krasnodar',time:'19:00',score:'1-0'},
+    {date:'2025-09-27',home:'Rostov',away:'Zenit',time:'16:00',score:'0-3'},
+    {date:'2025-10-04',home:'Spartak',away:'Lokomotiv',time:'19:00',score:'1-1'},
+    {date:'2025-10-18',home:'Zenit',away:'CSKA',time:'19:00',score:'2-0'},
+    {date:'2025-10-25',home:'Krasnodar',away:'Dynamo',time:'18:00',score:'3-1'},
+    {date:'2025-11-01',home:'Rubin',away:'Spartak',time:'16:00',score:'1-2'},
+    {date:'2025-11-08',home:'Dynamo',away:'Lokomotiv',time:'18:00',score:'2-2'},
+    {date:'2025-11-22',home:'Zenit',away:'Krasnodar',time:'19:00',score:'1-0'},
+    {date:'2025-11-29',home:'CSKA',away:'Spartak',time:'18:00',score:'0-1'},
+    {date:'2025-12-06',home:'Akhmat',away:'Zenit',time:'14:00',score:'0-2'},
+    {date:'2026-02-08',home:'Zenit',away:'Spartak',time:'19:00',score:'2-1',featured:true},
+    {date:'2026-02-08',home:'CSKA',away:'Lokomotiv',time:'16:30',score:'1-0'},
+    {date:'2026-02-09',home:'Krasnodar',away:'Dynamo',time:'18:00',score:'2-2'},
+    {date:'2026-02-09',home:'Rostov',away:'Rubin',time:'14:00',score:'1-0'},
+    {date:'2026-02-15',home:'Spartak',away:'Krasnodar',time:'19:00',score:null},
+    {date:'2026-02-15',home:'Dynamo',away:'CSKA',time:'16:30',score:null},
+    {date:'2026-02-16',home:'Lokomotiv',away:'Zenit',time:'18:00',score:null},
+    {date:'2026-02-22',home:'Zenit',away:'Dynamo',time:'19:00',score:null},
+    {date:'2026-02-22',home:'CSKA',away:'Akhmat',time:'16:30',score:null},
+    {date:'2026-03-01',home:'Spartak',away:'Zenit',time:'19:00',score:null},
+    {date:'2026-03-08',home:'Krasnodar',away:'CSKA',time:'18:00',score:null},
+    {date:'2026-04-04',home:'Zenit',away:'Rubin',time:'19:00',score:null},
+    {date:'2026-05-16',home:'CSKA',away:'Zenit',time:'19:00',score:null},
+  ],
+  ucl: [
+    {date:'2025-09-17',home:'Bayern Munich',away:'Dinamo Zagreb',time:'21:00',score:'9-2'},
+    {date:'2025-09-18',home:'Liverpool',away:'AC Milan',time:'21:00',score:'3-1'},
+    {date:'2025-09-18',home:'PSG',away:'Girona',time:'21:00',score:'1-0'},
+    {date:'2025-10-01',home:'Arsenal',away:'PSG',time:'21:00',score:'2-0'},
+    {date:'2025-10-01',home:'Barcelona',away:'Young Boys',time:'21:00',score:'5-0'},
+    {date:'2025-10-22',home:'AC Milan',away:'Club Brugge',time:'21:00',score:'3-1'},
+    {date:'2025-11-05',home:'Liverpool',away:'Bayer Leverkusen',time:'21:00',score:'4-0'},
+    {date:'2025-11-05',home:'Real Madrid',away:'AC Milan',time:'21:00',score:'1-3'},
+    {date:'2025-11-26',home:'Barcelona',away:'Brest',time:'21:00',score:'3-0'},
+    {date:'2025-12-10',home:'Man City',away:'Juventus',time:'21:00',score:'0-2'},
+    {date:'2025-12-10',home:'Bayern Munich',away:'PSG',time:'21:00',score:'1-0'},
+    {date:'2026-01-21',home:'PSG',away:'Man City',time:'21:00',score:'4-2'},
+    {date:'2026-01-21',home:'Arsenal',away:'Dinamo Zagreb',time:'21:00',score:'3-0'},
+    {date:'2026-01-29',home:'Barcelona',away:'Atalanta',time:'21:00',score:'2-2'},
+    {date:'2026-01-29',home:'Liverpool',away:'PSV',time:'21:00',score:'2-1'},
+    // R16
+    {date:'2026-02-11',home:'PSG',away:'Liverpool',time:'21:00',score:null,featured:true},
+    {date:'2026-02-11',home:'Bayern Munich',away:'Arsenal',time:'21:00',score:null,featured:true},
+    {date:'2026-02-12',home:'Real Madrid',away:'Man City',time:'21:00',score:null,featured:true},
+    {date:'2026-02-12',home:'Inter',away:'Dortmund',time:'21:00',score:null},
+    {date:'2026-02-18',home:'Liverpool',away:'PSG',time:'21:00',score:null},
+    {date:'2026-02-18',home:'Arsenal',away:'Bayern Munich',time:'21:00',score:null},
+    {date:'2026-02-19',home:'Man City',away:'Real Madrid',time:'21:00',score:null},
+    {date:'2026-02-19',home:'Dortmund',away:'Inter',time:'21:00',score:null},
+    {date:'2026-03-11',home:'Barcelona',away:'Juventus',time:'21:00',score:null},
+    {date:'2026-04-08',home:'Liverpool',away:'Barcelona',time:'21:00',score:null},
+  ],
+  uel: [
+    {date:'2025-09-25',home:'Tottenham',away:'Ferencvaros',time:'21:00',score:'2-1'},
+    {date:'2025-09-25',home:'Man Utd',away:'FC Twente',time:'21:00',score:'1-1'},
+    {date:'2025-09-25',home:'Lazio',away:'Nice',time:'21:00',score:'4-1'},
+    {date:'2025-10-03',home:'Roma',away:'Athletic Bilbao',time:'18:45',score:'1-1'},
+    {date:'2025-10-24',home:'Fenerbahce',away:'Man Utd',time:'21:00',score:'1-1'},
+    {date:'2025-10-24',home:'Tottenham',away:'AZ Alkmaar',time:'21:00',score:'1-0'},
+    {date:'2025-11-07',home:'Man Utd',away:'PAOK',time:'21:00',score:'2-0'},
+    {date:'2025-11-28',home:'Tottenham',away:'Roma',time:'21:00',score:'2-2'},
+    {date:'2025-12-12',home:'Athletic Bilbao',away:'Lazio',time:'21:00',score:'0-1'},
+    {date:'2025-12-12',home:'Man Utd',away:'Viktoria Plzen',time:'21:00',score:'3-1'},
+    {date:'2026-01-23',home:'Roma',away:'AZ Alkmaar',time:'21:00',score:'3-0'},
+    {date:'2026-01-30',home:'Tottenham',away:'Elfsborg',time:'21:00',score:'3-0'},
+    // R16
+    {date:'2026-02-13',home:'Tottenham',away:'Lazio',time:'21:00',score:null,featured:true},
+    {date:'2026-02-13',home:'Man Utd',away:'Roma',time:'21:00',score:null,featured:true},
+    {date:'2026-02-20',home:'Lazio',away:'Tottenham',time:'21:00',score:null},
+    {date:'2026-02-20',home:'Roma',away:'Man Utd',time:'21:00',score:null},
+    {date:'2026-03-13',home:'Athletic Bilbao',away:'Man Utd',time:'21:00',score:null},
+  ]
+};
+const STANDINGS = {
+  epl: [
+    {pos:1,abbr:'ARS',w:17,d:5,l:3,pts:56},
+    {pos:2,abbr:'MCI',w:15,d:5,l:5,pts:50},
+    {pos:3,abbr:'AVL',w:14,d:5,l:6,pts:47},
+    {pos:4,abbr:'MUN',w:12,d:8,l:5,pts:44},
+    {pos:5,abbr:'CFC',w:12,d:7,l:6,pts:43},
+    {pos:6,abbr:'LFC',w:11,d:6,l:8,pts:39},
+    {pos:7,abbr:'BRE',w:12,d:3,l:10,pts:39},
+    {pos:8,abbr:'EVE',w:10,d:7,l:8,pts:37},
+    {pos:9,abbr:'SUN',w:9,d:9,l:7,pts:36},
+    {pos:10,abbr:'FUL',w:10,d:4,l:11,pts:34},
+  ],
+  laliga: [
+    {pos:1,abbr:'BAR',w:18,d:4,l:3,pts:58},
+    {pos:2,abbr:'RMA',w:16,d:5,l:4,pts:53},
+    {pos:3,abbr:'ATM',w:14,d:7,l:4,pts:49},
+    {pos:4,abbr:'ATH',w:12,d:8,l:5,pts:44},
+    {pos:5,abbr:'VIL',w:12,d:6,l:7,pts:42},
+    {pos:6,abbr:'RSO',w:10,d:7,l:8,pts:37},
+    {pos:7,abbr:'BET',w:9,d:8,l:8,pts:35},
+    {pos:8,abbr:'GIR',w:9,d:7,l:9,pts:34},
+    {pos:9,abbr:'SEV',w:8,d:8,l:9,pts:32},
+    {pos:10,abbr:'CEL',w:8,d:7,l:10,pts:31},
+  ],
+  seriea: [
+    {pos:1,abbr:'NAP',w:17,d:5,l:3,pts:56},
+    {pos:2,abbr:'INT',w:16,d:6,l:3,pts:54},
+    {pos:3,abbr:'JUV',w:13,d:8,l:4,pts:47},
+    {pos:4,abbr:'MIL',w:12,d:7,l:6,pts:43},
+    {pos:5,abbr:'ATA',w:12,d:6,l:7,pts:42},
+    {pos:6,abbr:'LAZ',w:11,d:5,l:9,pts:38},
+    {pos:7,abbr:'ROM',w:10,d:6,l:9,pts:36},
+    {pos:8,abbr:'FIO',w:9,d:7,l:9,pts:34},
+    {pos:9,abbr:'BOL',w:8,d:8,l:9,pts:32},
+    {pos:10,abbr:'TOR',w:7,d:8,l:10,pts:29},
+  ],
+  bundesliga: [
+    {pos:1,abbr:'BAY',w:19,d:2,l:2,pts:59},
+    {pos:2,abbr:'BVB',w:14,d:5,l:4,pts:47},
+    {pos:3,abbr:'LEV',w:13,d:6,l:4,pts:45},
+    {pos:4,abbr:'RBL',w:12,d:5,l:6,pts:41},
+    {pos:5,abbr:'STU',w:11,d:6,l:6,pts:39},
+    {pos:6,abbr:'FRA',w:10,d:7,l:6,pts:37},
+    {pos:7,abbr:'FRE',w:10,d:5,l:8,pts:35},
+    {pos:8,abbr:'WOB',w:8,d:6,l:9,pts:30},
+    {pos:9,abbr:'M05',w:7,d:7,l:9,pts:28},
+    {pos:10,abbr:'UNB',w:7,d:6,l:10,pts:27},
+  ],
+  ligue1: [
+    {pos:1,abbr:'PSG',w:19,d:3,l:1,pts:60},
+    {pos:2,abbr:'OM',w:14,d:5,l:4,pts:47},
+    {pos:3,abbr:'MON',w:13,d:5,l:5,pts:44},
+    {pos:4,abbr:'LIL',w:12,d:6,l:5,pts:42},
+    {pos:5,abbr:'LYO',w:11,d:7,l:5,pts:40},
+    {pos:6,abbr:'NIC',w:10,d:6,l:7,pts:36},
+    {pos:7,abbr:'REN',w:9,d:7,l:7,pts:34},
+    {pos:8,abbr:'LEN',w:9,d:6,l:8,pts:33},
+    {pos:9,abbr:'BRE',w:8,d:6,l:9,pts:30},
+    {pos:10,abbr:'STR',w:7,d:7,l:9,pts:28},
+  ],
+  rpl: [
+    {pos:1,abbr:'ЗЕН',w:14,d:3,l:1,pts:45},
+    {pos:2,abbr:'КРА',w:12,d:4,l:2,pts:40},
+    {pos:3,abbr:'СПА',w:11,d:3,l:4,pts:36},
+    {pos:4,abbr:'ЦСК',w:10,d:4,l:4,pts:34},
+    {pos:5,abbr:'ДИН',w:9,d:5,l:4,pts:32},
+    {pos:6,abbr:'ЛОК',w:8,d:6,l:4,pts:30},
+    {pos:7,abbr:'РОС',w:7,d:5,l:6,pts:26},
+    {pos:8,abbr:'РУБ',w:6,d:4,l:8,pts:22},
+    {pos:9,abbr:'АХМ',w:5,d:5,l:8,pts:20},
+    {pos:10,abbr:'ОРН',w:4,d:4,l:10,pts:16},
+  ],
+  ucl: [
+    {pos:2,abbr:'BAR',w:7,d:0,l:1,pts:21},
+    {pos:3,abbr:'ARS',w:6,d:1,l:1,pts:19},
+    {pos:4,abbr:'INT',w:5,d:3,l:0,pts:18},
+    {pos:5,abbr:'LEV',w:5,d:2,l:1,pts:17},
+    {pos:6,abbr:'LIL',w:5,d:2,l:1,pts:17},
+    {pos:7,abbr:'ATL',w:5,d:1,l:2,pts:16},
+    {pos:8,abbr:'BAY',w:5,d:1,l:2,pts:16},
+    {pos:9,abbr:'RMA',w:4,d:2,l:2,pts:14},
+    {pos:10,abbr:'MCI',w:4,d:1,l:3,pts:13},
+  ],
+  uel: [
+    {pos:1,abbr:'LAZ',w:6,d:2,l:0,pts:20},
+    {pos:2,abbr:'ATH',w:6,d:1,l:1,pts:19},
+    {pos:3,abbr:'TOT',w:5,d:2,l:1,pts:17},
+    {pos:4,abbr:'FRA',w:5,d:2,l:1,pts:17},
+    {pos:5,abbr:'AND',w:5,d:1,l:2,pts:16},
+    {pos:6,abbr:'MUN',w:4,d:3,l:1,pts:15},
+    {pos:7,abbr:'LYO',w:4,d:2,l:2,pts:14},
+    {pos:8,abbr:'ROM',w:4,d:2,l:2,pts:14},
+    {pos:9,abbr:'GLT',w:3,d:3,l:2,pts:12},
+    {pos:10,abbr:'FEN',w:3,d:2,l:3,pts:11},
+  ]
+};
+function matchKey(m) { return `${m.date}_${m.home}_${m.away}`; }
+
+const MATCH_EVENTS = {
+  // EPL MW25
+  '2026-02-07_Man Utd_Tottenham': [
+    {min:12,type:'goal',player:'B. Fernandes',team:'home',detail:'Penalty'},
+    {min:34,type:'yellow',player:'R. Bentancur',team:'away'},
+    {min:58,type:'sub',player:'A. Garnacho ↔ M. Rashford',team:'home'},
+    {min:71,type:'goal',player:'R. Højlund',team:'home'},
+    {min:80,type:'yellow',player:'K. Mainoo',team:'home'},
+  ],
+  '2026-02-07_Arsenal_Sunderland': [
+    {min:8,type:'goal',player:'B. Saka',team:'home',detail:'Assist: M. Ødegaard'},
+    {min:27,type:'yellow',player:'J. Ballard',team:'away'},
+    {min:45,type:'goal',player:'K. Havertz',team:'home'},
+    {min:63,type:'goal',player:'M. Ødegaard',team:'home',detail:'Free kick'},
+    {min:74,type:'sub',player:'G. Jesus ↔ L. Trossard',team:'home'},
+    {min:82,type:'goal',player:'D. Clarke',team:'away'},
+  ],
+  '2026-02-07_Fulham_Everton': [
+    {min:19,type:'goal',player:'R. Jiménez',team:'home'},
+    {min:44,type:'yellow',player:'J. Tarkowski',team:'away'},
+    {min:55,type:'goal',player:'A. Iwobi',team:'home'},
+    {min:88,type:'goal',player:'D. Calvert-Lewin',team:'away'},
+  ],
+  '2026-02-07_Wolves_Chelsea': [
+    {min:31,type:'yellow',player:'M. Lemina',team:'home'},
+    {min:52,type:'goal',player:'C. Palmer',team:'away',detail:'Assist: N. Jackson'},
+    {min:67,type:'sub',player:'N. Jackson ↔ M. Mudryk',team:'away'},
+    {min:78,type:'yellow',player:'C. Palmer',team:'away'},
+  ],
+  '2026-02-07_Newcastle_Brentford': [
+    {min:15,type:'goal',player:'A. Isak',team:'home'},
+    {min:38,type:'goal',player:'B. Mbeumo',team:'away'},
+    {min:60,type:'red',player:'F. Schär',team:'home',detail:'2nd yellow'},
+    {min:72,type:'goal',player:'I. Toney',team:'away'},
+  ],
+  '2026-02-08_Brighton_Crystal Palace': [
+    {min:22,type:'goal',player:'K. Mitoma',team:'home'},
+    {min:39,type:'yellow',player:'M. Guéhi',team:'away'},
+    {min:64,type:'goal',player:'E. Eze',team:'away'},
+  ],
+  '2026-02-08_Liverpool_Man City': [
+    {min:11,type:'goal',player:'M. Salah',team:'home',detail:'Assist: T. Alexander-Arnold'},
+    {min:35,type:'yellow',player:'R. Dias',team:'away'},
+    {min:42,type:'goal',player:'E. Haaland',team:'away'},
+    {min:68,type:'sub',player:'P. Foden ↔ J. Grealish',team:'away'},
+    {min:79,type:'goal',player:'E. Haaland',team:'away',detail:'Header'},
+  ],
+  '2026-02-06_Leeds_Nott\'m Forest': [
+    {min:56,type:'goal',player:'W. Gnonto',team:'home'},
+    {min:70,type:'yellow',player:'N. Williams',team:'away'},
+    {min:85,type:'yellow',player:'E. Ampadu',team:'home'},
+  ],
+  // LIVE matches
+  '2026-02-10_Chelsea_Leeds': [
+    {min:33,type:'goal',player:'C. Palmer',team:'home',detail:'Assist: E. Neto'},
+    {min:48,type:'yellow',player:'J. Firpo',team:'away'},
+  ],
+  '2026-02-10_Tottenham_Newcastle': [
+    {min:7,type:'goal',player:'S. Son',team:'home'},
+    {min:28,type:'yellow',player:'B. Guimarães',team:'away'},
+    {min:41,type:'goal',player:'D. Kulusevski',team:'home'},
+    {min:55,type:'goal',player:'A. Isak',team:'away'},
+  ],
+  '2026-02-10_Everton_Bournemouth': [
+    {min:20,type:'yellow',player:'I. Gueye',team:'home'},
+    {min:51,type:'yellow',player:'A. Smith',team:'away'},
+  ],
+};
+const I18N = {
+  ru: {
+    months: ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
+    monthsGen: ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'],
+    monthsShortGen: ['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'],
+    monthsShort: ['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'],
+    daysShort: ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'],
+    daysFull: ['Понедельник','Вторник','Среда','Четверг','Пятница','Суббота','Воскресенье'],
+    views: { month: 'Месяц', week: 'Неделя', day: 'День' },
+    today: 'Сегодня',
+    noMatches: 'Нет матчей',
+    noMatchesDay: 'Нет матчей в этот день',
+    more: 'ещё',
+    finished: 'Завершён',
+    upcoming: 'Предстоящий',
+    live: 'LIVE',
+    liveMin: 'мин',
+    upcomingTitle: '⚡ Ближайшие',
+    newsTitle: '📰 Последние новости',
+    allNews: 'Все новости',
+    standingsTitle: '📊 Таблица',
+    club: 'Клуб',
+    w: 'В',
+    d: 'Н',
+    l: 'П',
+    pts: 'О',
+    headerTitle: 'ТОЛЬКО ФУТБОЛ',
+    headerSub: 'Матчи · Новости · Статистика',
+    vs: 'vs',
+    langSwitch: 'EN',
+    matchEvents: 'События матча',
+    goal: 'Гол',
+    yellowCard: 'Жёлтая карточка',
+    redCard: 'Красная карточка',
+    substitution: 'Замена',
+    halfTime: 'Перерыв',
+    fullTime: 'Завершён',
+    liveNow: 'LIVE',
+    kickoff: 'Начало',
+    stadium: 'Стадион',
+    featuredMatch: '🔥 Центральные матчи',
+    authLogin: 'Войти',
+    authTitle: 'Вход в аккаунт',
+    authSubtitle: 'Следите за любимыми командами и лигами',
+    authLabel: 'Почта или телефон',
+    authPlaceholder: '+7 ... или email@example.com',
+    authSubmit: 'Продолжить',
+    authOr: 'или',
+    authFooter: 'Нажимая «Продолжить», вы принимаете условия использования',
+  },
+};
+
+function t(key) { return I18N.ru[key]; }
+
+// Team name translations
+const TEAM_RU = {
+  'Man Utd':'Ман Юнайтед','Man City':'Ман Сити','Arsenal':'Арсенал','Liverpool':'Ливерпуль',
+  'Chelsea':'Челси','Tottenham':'Тоттенхэм','Newcastle':'Ньюкасл','Brighton':'Брайтон',
+  'Aston Villa':'Астон Вилла','West Ham':'Вест Хэм','Crystal Palace':'Кристал Пэлас',
+  'Fulham':'Фулхэм','Brentford':'Брентфорд','Everton':'Эвертон','Wolves':'Вулверхэмптон',
+  'Bournemouth':'Борнмут','Leeds':'Лидс','Sunderland':'Сандерленд','Burnley':'Бёрнли',
+  "Nott'm Forest":'Ноттингем Форест',
+  'Barcelona':'Барселона','Real Madrid':'Реал Мадрид','Atlético Madrid':'Атлетико Мадрид',
+  'Real Sociedad':'Реал Сосьедад','Sevilla':'Севилья','Villarreal':'Вильярреал',
+  'Athletic Bilbao':'Атлетик Бильбао','Valencia':'Валенсия','Celta Vigo':'Сельта',
+  'Girona':'Жирона','Las Palmas':'Лас-Пальмас','Mallorca':'Мальорка',
+  'Napoli':'Наполи','Inter':'Интер','AC Milan':'Милан','Juventus':'Ювентус',
+  'Roma':'Рома','Lazio':'Лацио','Atalanta':'Аталанта','Fiorentina':'Фиорентина',
+  'Genoa':'Дженоа','Verona':'Верона',
+  'Bayern Munich':'Бавария','Dortmund':'Дортмунд','RB Leipzig':'РБ Лейпциг',
+  'Leverkusen':'Леверкузен','Bayer Leverkusen':'Байер Леверкузен','Frankfurt':'Айнтрахт',
+  'Stuttgart':'Штутгарт','Wolfsburg':'Вольфсбург','Freiburg':'Фрайбург',
+  'Union Berlin':'Унион Берлин',
+  'PSG':'ПСЖ','Marseille':'Марсель','Monaco':'Монако','Lille':'Лилль','Lyon':'Лион',
+  'Nice':'Ницца','Rennes':'Ренн','Strasbourg':'Страсбур','Le Havre':'Гавр',
+  'PSV':'ПСВ','Club Brugge':'Клуб Брюгге','Dinamo Zagreb':'Динамо Загреб',
+  'Young Boys':'Янг Бойз','Brest':'Брест','PAOK':'ПАОК','AZ Alkmaar':'АЗ Алкмар',
+  'FC Twente':'Твенте','Ferencvaros':'Ференцварош','Elfsborg':'Эльфсборг',
+  'Fenerbahce':'Фенербахче','Viktoria Plzen':'Виктория Пльзень',
+  'Zenit':'Зенит','Spartak':'Спартак','CSKA':'ЦСКА','Dynamo':'Динамо',
+  'Lokomotiv':'Локомотив','Krasnodar':'Краснодар','Rostov':'Ростов',
+  'Rubin':'Рубин','Akhmat':'Ахмат','Orenburg':'Оренбург',
+};
+function teamRu(name) { return TEAM_RU[name] || name; }
+
+function teamCrest(name) {
+  const shield = (bg, fg, txt) => `<svg viewBox="0 0 40 44" xmlns="http://www.w3.org/2000/svg"><path d="M20 0 L38 6 L38 24 C38 34 28 42 20 44 C12 42 2 34 2 24 L2 6Z" fill="${bg}" stroke="rgba(255,255,255,0.15)" stroke-width="1"/><text x="20" y="26" text-anchor="middle" fill="${fg}" font-size="${txt.length>2?9:13}" font-family="Arial,sans-serif" font-weight="700">${txt}</text></svg>`;
+  const crests = {
+    'Arsenal':shield('#EF0107','#fff','A'),'Man City':shield('#6CABDD','#fff','MC'),'Liverpool':shield('#C8102E','#fff','L'),
+    'Chelsea':shield('#034694','#fff','C'),'Man Utd':shield('#DA291C','#fff','MU'),'Tottenham':shield('#132257','#fff','T'),
+    'Newcastle':shield('#241F20','#fff','N'),'Brighton':shield('#0057B8','#fff','B'),'Aston Villa':shield('#670E36','#fff','AV'),
+    'West Ham':shield('#7A263A','#fff','WH'),'Everton':shield('#003399','#fff','E'),'Fulham':shield('#000','#fff','F'),
+    'Brentford':shield('#e30613','#fff','BR'),'Crystal Palace':shield('#1B458F','#fff','CP'),'Wolves':shield('#FDB913','#000','W'),
+    'Bournemouth':shield('#DA291C','#000','BO'),'Sunderland':shield('#EB172B','#fff','SU'),'Leeds':shield('#FFCD00','#1D428A','LE'),
+    'Burnley':shield('#6C1D45','#fff','BU'),'Nottm Forest':shield('#DD0000','#fff','NF'),
+    'Barcelona':shield('#A50044','#EDBB00','BA'),'Real Madrid':shield('#FEBE10','#00529F','RM'),'Atletico Madrid':shield('#CB3524','#fff','AT'),
+    'Athletic Bilbao':shield('#EE2523','#fff','AB'),'Villarreal':shield('#FFCD00','#005DAA','VI'),'Real Sociedad':shield('#0067B1','#fff','RS'),
+    'Sevilla':shield('#D40F33','#fff','SE'),'Girona':shield('#CD2534','#fff','GI'),'Celta Vigo':shield('#8AC3EE','#fff','CE'),
+    'Valencia':shield('#EE3524','#000','VA'),'Mallorca':shield('#E20613','#000','MA'),'Las Palmas':shield('#FFE400','#005DAA','LP'),
+    'Betis':shield('#00954C','#fff','BE'),
+    'Napoli':shield('#12A0D7','#fff','NA'),'Inter':shield('#010E80','#fff','IN'),'Juventus':shield('#000','#fff','JU'),
+    'AC Milan':shield('#FB090B','#000','MI'),'Roma':shield('#8E1F2F','#F0BC42','RO'),'Lazio':shield('#87D8F7','#fff','LA'),
+    'Atalanta':shield('#1E71B8','#000','AT'),'Fiorentina':shield('#482E92','#fff','FI'),'Genoa':shield('#9E1B2D','#00387B','GE'),
+    'Verona':shield('#002F6C','#FFE500','VE'),'Torino':shield('#8B0000','#fff','TO'),'Bologna':shield('#1A2F5A','#C8102E','BO'),
+    'Bayern Munich':shield('#DC052D','#fff','BA'),'Dortmund':shield('#FDE100','#000','DO'),'Leverkusen':shield('#E32221','#000','LE'),
+    'Bayer Leverkusen':shield('#E32221','#000','LE'),'RB Leipzig':shield('#DD0741','#fff','RB'),'Frankfurt':shield('#E1000F','#fff','FR'),
+    'Stuttgart':shield('#E32219','#fff','ST'),'Wolfsburg':shield('#65B32E','#fff','WO'),'Freiburg':shield('#000','#fff','FB'),
+    'Union Berlin':shield('#EB1923','#fff','UB'),
+    'PSG':shield('#004170','#fff','PS'),'Marseille':shield('#2FAEE0','#fff','OM'),'Monaco':shield('#E7352B','#fff','MO'),
+    'Lille':shield('#E2001A','#fff','LI'),'Lyon':shield('#1A3C78','#fff','OL'),'Nice':shield('#000','#C5192D','NI'),
+    'Rennes':shield('#DA0022','#000','RE'),'Strasbourg':shield('#009FE3','#fff','ST'),'Le Havre':shield('#00529F','#fff','LH'),
+    'Zenit':shield('#00AEEF','#fff','ЗЕ'),'Spartak':shield('#E2001A','#fff','СП'),'CSKA':shield('#E4002B','#002D72','ЦС'),
+    'Dynamo':shield('#0E5FA6','#fff','ДИ'),'Lokomotiv':shield('#006B35','#E2001A','ЛО'),'Krasnodar':shield('#006B35','#000','КР'),
+    'Rostov':shield('#F0D200','#000','РО'),'Rubin':shield('#670038','#fff','РУ'),'Akhmat':shield('#006B35','#fff','АХ'),
+    'Club Brugge':shield('#0054A6','#fff','CB'),'PSV':shield('#ED1C24','#fff','PS'),'Dinamo Zagreb':shield('#0055A4','#fff','DZ'),
+    'Young Boys':shield('#FFD700','#000','YB'),'Brest':shield('#D7063B','#fff','BR'),'PAOK':shield('#000','#fff','PA'),
+    'Fenerbahce':shield('#FFED00','#1D3564','FE'),'AZ Alkmaar':shield('#E4002B','#fff','AZ'),'FC Twente':shield('#E4002B','#fff','TW'),
+    'Ferencvaros':shield('#007843','#fff','FE'),'Elfsborg':shield('#FFD700','#000','EL'),'Viktoria Plzen':shield('#1C3578','#C4122E','VP'),
+    'Anderlecht':shield('#660099','#fff','AN'),
+  };
+  return crests[name] || shield('#555','#fff', teamRu(name).slice(0,2).toUpperCase());
+}
+
+const MATCH_REFEREES = {
+  'Arsenal vs Man City': {main:'М. Оливер',assistants:['С. Чайлд','Д. Кук'],var:'Д. Кэттигол',fourth:'К. Хупер'},
+  'Liverpool vs Chelsea': {main:'Э. Тейлор',assistants:['Г. Бесвик','А. Холмс'],var:'С. Аттвелл',fourth:'Р. Джонс'},
+  'Man Utd vs Tottenham': {main:'К. Павсон',assistants:['М. Перри','А. Макдонелл'],var:'М. Дин',fourth:'Т. Харрингтон'},
+  'Barcelona vs Real Madrid': {main:'Х. М. Лаос',assistants:['Р. Алонсо','Д. Бабрано'],var:'Х. Мартинес',fourth:'К. Дель Серро'},
+  'Napoli vs Inter': {main:'Д. Орсато',assistants:['А. Гиалатини','Д. Тонолини'],var:'П. Валери',fourth:'Л. Пайретто'},
+  'Bayern Munich vs Dortmund': {main:'Д. Айтекин',assistants:['К. Гитте','М. Шааль'],var:'С. Дингерт',fourth:'Т. Штик'},
+  'PSG vs Marseille': {main:'К. Тюрпен',assistants:['С. Жанно','Н. Дано'],var:'Б. Бастьен',fourth:'В. Бриске'},
+  'Zenit vs Spartak': {main:'С. Карасёв',assistants:['А. Лунёв','Д. Мосякин'],var:'В. Безбородов',fourth:'К. Левников'},
+  'CSKA vs Lokomotiv': {main:'В. Казарцев',assistants:['Р. Тихонов','А. Гвоздев'],var:'А. Сухой',fourth:'Д. Масленников'},
+  'Krasnodar vs Dynamo': {main:'К. Левников',assistants:['С. Теплов','Д. Гусейнов'],var:'С. Иванов',fourth:'П. Кукуян'},
+  'Real Madrid vs Liverpool': {main:'Д. Макели',assistants:['Н. Мудерс','Ш. Лехнер'],var:'М. Фритц',fourth:'С. Клосснер'},
+  'Bayern Munich vs Arsenal': {main:'И. Ковач',assistants:['Т. Флор','М. Шааль'],var:'Б. Бастьен',fourth:'А. Экберг'},
+  'Real Madrid vs Stuttgart': {main:'Ф. Летексье',assistants:['С. Рахлен','К. Мулэ'],var:'Ж. Брисар',fourth:'Х. Вернике'},
+  'Liverpool vs AC Milan': {main:'С. Марчиняк',assistants:['Т. Лисяк','А. Кулеша'],var:'Т. Квятковский',fourth:'П. Гиль'},
+};
+
+function getMatchReferee(m) {
+  const key1 = m.home + ' vs ' + m.away;
+  const key2 = m.away + ' vs ' + m.home;
+  return MATCH_REFEREES[key1] || MATCH_REFEREES[key2] || null;
+}
+
+function openAuthPopup() {
+  const overlay = document.getElementById('authOverlay');
+  overlay.classList.add('open');
+  setTimeout(() => document.getElementById('authInput').focus(), 300);
+  document.addEventListener('keydown', authEscHandler);
+}
+
+function closeAuthPopup() {
+  document.getElementById('authOverlay').classList.remove('open');
+  document.removeEventListener('keydown', authEscHandler);
+}
+
+function authEscHandler(e) { if (e.key === 'Escape') closeAuthPopup(); }
+
+function submitAuth() {
+  const val = document.getElementById('authInput').value.trim();
+  if (!val) {
+    document.getElementById('authInput').focus();
+    document.getElementById('authInput').style.borderColor = 'var(--accent)';
+    return;
+  }
+  closeAuthPopup();
+}
+
+let currentView = 'day';
+let currentDate = new Date(2026, 1, 10);
+const today = new Date(2026, 1, 10);
+
+// Active leagues (can select multiple)
+let activeLeagues = new Set(['epl']);
+let standingsLeague = 'epl';
+let renderedMatches = []; // for click-to-detail lookup
+
+const SEASONS = [
+  { id: '2025-26', label: '2025 / 26', startMonth: [2025, 7] },
+  { id: '2024-25', label: '2024 / 25', startMonth: [2024, 7] },
+  { id: '2023-24', label: '2023 / 24', startMonth: [2023, 7] },
+  { id: '2022-23', label: '2022 / 23', startMonth: [2022, 7] },
+  { id: '2021-22', label: '2021 / 22', startMonth: [2021, 7] },
+  { id: '2020-21', label: '2020 / 21', startMonth: [2020, 7] },
+  { id: '2019-20', label: '2019 / 20', startMonth: [2019, 7] },
+];
+let currentSeason = '2025-26';
+
+function toggleSeasonDropdown() {
+  const sel = document.getElementById('seasonSelector');
+  const isOpen = sel.classList.toggle('open');
+  if (isOpen) {
+    renderSeasonDropdown();
+    setTimeout(() => document.addEventListener('click', closeSeasonDropdownOutside), 0);
+  } else {
+    document.removeEventListener('click', closeSeasonDropdownOutside);
+  }
+}
+
+function closeSeasonDropdownOutside(e) {
+  const sel = document.getElementById('seasonSelector');
+  if (!sel.contains(e.target)) {
+    sel.classList.remove('open');
+    document.removeEventListener('click', closeSeasonDropdownOutside);
+  }
+}
+
+function renderSeasonDropdown() {
+  const dd = document.getElementById('seasonDropdown');
+  dd.innerHTML = SEASONS.map(s => `
+    <button class="season-option ${s.id === currentSeason ? 'active' : ''}" data-season="${s.id}">${s.label}</button>
+  `).join('');
+  dd.querySelectorAll('.season-option').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      selectSeason(btn.dataset.season);
+    });
+  });
+}
+
+function selectSeason(seasonId) {
+  currentSeason = seasonId;
+  const s = SEASONS.find(s => s.id === seasonId);
+  document.getElementById('seasonLabel').textContent = s.label;
+  document.getElementById('seasonSelector').classList.remove('open');
+  document.removeEventListener('click', closeSeasonDropdownOutside);
+  // Navigate to season start (August of start year) for past seasons, today for current
+  if (seasonId === '2025-26') {
+    currentDate = new Date(today);
+  } else {
+    currentDate = new Date(s.startMonth[0], s.startMonth[1], 1);
+  }
+  render();
+}
+
+function getAllActiveMatches() {
+  let all = [];
+  activeLeagues.forEach(lid => {
+    (MATCHES[lid] || []).forEach(m => all.push({...m, league: lid}));
+  });
+  return all;
+}
+
+function getMatchesForDate(dateStr) {
+  return getAllActiveMatches().filter(m => m.date === dateStr);
+}
+
+function dateToStr(y, m, d) {
+  return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+}
+
+function getDaysInMonth(y, m) { return new Date(y, m+1, 0).getDate(); }
+function getFirstDayOfMonth(y, m) { return (new Date(y, m, 1).getDay() + 6) % 7; }
+
+function getWeekDates(d) {
+  const date = new Date(d);
+  const day = (date.getDay() + 6) % 7;
+  const monday = new Date(date);
+  monday.setDate(date.getDate() - day);
+  return Array.from({length:7}, (_,i) => {
+    const dd = new Date(monday);
+    dd.setDate(monday.getDate() + i);
+    return dd;
+  });
+}
+
+function matchDatesForMonth(y, m) {
+  const prefix = `${y}-${String(m+1).padStart(2,'0')}`;
+  const set = new Set();
+  getAllActiveMatches().forEach(match => {
+    if (match.date.startsWith(prefix)) set.add(parseInt(match.date.split('-')[2]));
+  });
+  return set;
+}
+
+function leagueColor(lid) {
+  return LEAGUES[lid]?.colorBright || '#888';
+}
+
+function renderLeagueTabs() {
+  const container = document.getElementById('leagueTabs');
+  const allIds = Object.keys(LEAGUES);
+  const domesticIds = allIds.filter(id => !LEAGUES[id].isCup);
+  const cupIds = allIds.filter(id => LEAGUES[id].isCup);
+
+  const renderGroup = (ids) => ids.map((lid, i) => {
+    const lg = LEAGUES[lid];
+    const isActive = activeLeagues.has(lid);
+    return `
+      ${i > 0 ? '<div class="league-separator"></div>' : ''}
+      <button class="league-tab ${isActive ? 'active' : ''}"
+        data-league="${lid}"
+        title="${lg.name}"
+        style="${isActive ? `--league-color:${lg.colorBright};--league-glow:${lg.glow}` : `--league-color:${lg.colorBright}`}">
+        <span class="league-logo">${lg.logo}</span>
+        <span class="league-dot" style="background:${lg.colorBright}"></span>
+        ${lg.shortName}
+      </button>
+    `;
+  }).join('');
+
+  container.innerHTML = renderGroup(domesticIds)
+    + '<div class="league-divider"></div>'
+    + renderGroup(cupIds);
+
+  container.querySelectorAll('.league-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const lid = btn.dataset.league;
+      if (activeLeagues.has(lid)) {
+        if (activeLeagues.size > 1) {
+          activeLeagues.delete(lid);
+          if (standingsLeague === lid) standingsLeague = [...activeLeagues][0];
+        }
+      } else {
+        activeLeagues.add(lid);
+      }
+      renderLeagueTabs();
+      render();
+    });
+  });
+}
+
+function render() {
+  renderedMatches = [];
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <div class="sidebar-left">
+      ${renderNews()}
+    </div>
+    <div class="calendar-section">
+      ${renderToolbar()}
+      <div class="calendar-container" key="${currentView}-${currentDate.getTime()}">
+        ${currentView === 'month' ? renderMonth() : ''}
+        ${currentView === 'week' ? renderWeek() : ''}
+        ${currentView === 'day' ? renderDay() : ''}
+      </div>
+    </div>
+    <div class="sidebar-right">
+      ${renderStandings()}
+    </div>
+  `;
+  attachEvents();
+}
+
+function renderToolbar() {
+  const y = currentDate.getFullYear();
+  const m = currentDate.getMonth();
+  let titleText = '';
+  if (currentView === 'month') titleText = `${t('months')[m]} ${y}`;
+  else if (currentView === 'week') {
+    const wk = getWeekDates(currentDate);
+    titleText = `${wk[0].getDate()} ${t('monthsShortGen')[wk[0].getMonth()]} — ${wk[6].getDate()} ${t('monthsShortGen')[wk[6].getMonth()]} ${wk[6].getFullYear()}`;
+  } else {
+    titleText = `${currentDate.getDate()} ${t('monthsGen')[m]} ${y}`;
+  }
+
+  const chips = [...activeLeagues].map(lid => {
+    const lg = LEAGUES[lid];
+    return `<span class="active-league-chip" title="${lg.name}"><span class="chip-logo">${lg.logo}</span> ${lg.shortName}</span>`;
+  }).join('');
+
+  return `
+    <div class="calendar-toolbar">
+      <div>
+        <div class="calendar-title-group">
+          <div class="calendar-title">${titleText}</div>
+        </div>
+        <div class="active-leagues-display" style="margin-top:4px">${chips}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <div class="view-switcher">
+          ${['day','week','month'].map(v => `
+            <button class="view-btn ${currentView===v?'active':''}" data-view="${v}">
+              ${{month:t('views').month,week:t('views').week,day:t('views').day}[v]}
+            </button>
+          `).join('')}
+        </div>
+        <div class="nav-controls">
+          <button class="nav-btn" data-nav="prev">◀</button>
+          <button class="today-btn ${currentDate.getFullYear()===today.getFullYear() && currentDate.getMonth()===today.getMonth() && currentDate.getDate()===today.getDate() ? 'today-active' : ''}" data-nav="today">${t('today')}</button>
+          <button class="nav-btn" data-nav="next">▶</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderMonth() {
+  const y = currentDate.getFullYear();
+  const m = currentDate.getMonth();
+  const days = getDaysInMonth(y, m);
+  const firstDay = getFirstDayOfMonth(y, m);
+  const prevDays = getDaysInMonth(y, m-1);
+  const todayD = (today.getFullYear()===y && today.getMonth()===m) ? today.getDate() : -1;
+
+  let cells = '';
+  for (let i = firstDay - 1; i >= 0; i--) {
+    cells += `<div class="month-day other-month"><div class="month-day-number">${prevDays - i}</div></div>`;
+  }
+  for (let d = 1; d <= days; d++) {
+    const dateStr = dateToStr(y, m, d);
+    const matches = getMatchesForDate(dateStr);
+    const isToday = d === todayD;
+    cells += `
+      <div class="month-day ${isToday ? 'today' : ''}" data-day-click="${y}-${m}-${d}">
+        <div class="month-day-number">${d}</div>
+        ${matches.slice(0, 3).map(match => {
+          const isLive = !!match.live;
+          const pillClass = isLive ? 'live' : (match.score ? 'played' : 'upcoming');
+          const pillText = isLive ? match.live.score + "'" + match.live.minute : (match.score || match.time);
+          const hasDetail = true;
+          const midx = hasDetail ? renderedMatches.length : -1;
+          if (hasDetail) renderedMatches.push(match);
+          return `
+          <div class="match-pill ${pillClass}" ${hasDetail ? `data-match-idx="${midx}" style="cursor:pointer"` : ''}>
+            <span class="pill-league-logo">${LEAGUES[match.league].logo}</span>
+            ${match.home.substring(0,3)} ${pillText} ${match.away.substring(0,3)}
+          </div>
+        `}).join('')}
+        ${matches.length > 3 ? `<div style="font-size:9px;color:var(--gray-500);padding:1px 5px;">+${matches.length-3} ${t('more')}</div>` : ''}
+      </div>
+    `;
+  }
+  const total = firstDay + days;
+  const remaining = (7 - (total % 7)) % 7;
+  for (let d = 1; d <= remaining; d++) {
+    cells += `<div class="month-day other-month"><div class="month-day-number">${d}</div></div>`;
+  }
+
+  return `
+    <div class="month-header">${t('daysShort').map(d => `<div class="month-header-cell">${d}</div>`).join('')}</div>
+    <div class="month-grid">${cells}</div>
+  `;
+}
+
+function renderWeek() {
+  const dates = getWeekDates(currentDate);
+  const rows = dates.map(d => {
+    const dateStr = dateToStr(d.getFullYear(), d.getMonth(), d.getDate());
+    const matches = getMatchesForDate(dateStr);
+    if (!matches.length) return '';
+    const isToday = d.getDate()===today.getDate() && d.getMonth()===today.getMonth() && d.getFullYear()===today.getFullYear();
+    return `
+      <div class="week-day-row ${isToday ? 'today' : ''}">
+        <div class="week-day-label">
+          <div class="week-day-name">${t('daysShort')[(d.getDay()+6)%7]}</div>
+          <div class="week-day-num">${d.getDate()}</div>
+        </div>
+        <div class="week-matches">
+          ${matches.map(m => {
+            const isLive = !!m.live;
+            const hasDetail = true;
+            const midx = hasDetail ? renderedMatches.length : -1;
+            if (hasDetail) renderedMatches.push(m);
+            return `
+            <div class="week-match-card ${isLive ? 'live' : m.score ? 'played' : ''}" ${hasDetail ? `data-match-idx="${midx}" style="cursor:pointer"` : ''}>
+              <span class="wmc-league-logo">${LEAGUES[m.league].logo}</span>
+              <div class="match-time">${isLive ? `<span class="live-badge"><span class="live-dot"></span>${m.live.minute}'</span>` : m.time}</div>
+              <div class="match-teams">${teamRu(m.home)}<span class="match-vs">${t('vs')}</span>${teamRu(m.away)}</div>
+              ${isLive ? `<div class="match-score" style="color:var(--accent);font-weight:700">${m.live.score}</div>` : m.score ? `<div class="match-score">${m.score}</div>` : `<div class="match-league-abbr">${LEAGUES[m.league].shortName}</div>`}
+            </div>
+          `}).join('')}
+        </div>
+      </div>
+    `;
+  }).filter(Boolean).join('');
+  return `<div class="week-grid">${rows || `<div class="no-matches"><div class="no-matches-icon">⚽</div><div class="no-matches-text">${t('noMatches')}</div></div>`}</div>`;
+}
+
+function renderDay() {
+  const dateStr = dateToStr(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+  const matches = getMatchesForDate(dateStr);
+  const dayIdx = (currentDate.getDay() + 6) % 7;
+
+  // Featured matches (up to 3)
+  const featured = matches.filter(m => m.featured).slice(0, 3);
+
+  let featuredHTML = '';
+  if (featured.length) {
+    featuredHTML = `
+      <div class="featured-section">
+        <div class="featured-section-title">${t('featuredMatch')}</div>
+        <div class="featured-cards">
+          ${featured.map(m => {
+            const lg = LEAGUES[m.league];
+            const isLive = !!m.live;
+            const score = isLive ? m.live.score : m.score;
+            const hasDetail = true;
+            const midx = hasDetail ? renderedMatches.length : -1;
+            if (hasDetail) renderedMatches.push(m);
+            return `
+              <div class="featured-card ${isLive ? 'live' : ''}" ${hasDetail ? `data-match-idx="${midx}" style="cursor:pointer"` : ''}>
+                <div class="featured-league-logo">${lg.logo}</div>
+                ${isLive ? `<div style="display:flex;flex-direction:column;align-items:center;gap:2px;min-width:44px"><span class="live-badge"><span class="live-dot"></span>${t('live')}</span><span style="font-size:10px;color:var(--accent)">${m.live.minute}'</span></div>` : ''}
+                <div class="featured-teams">
+                  <div class="featured-team">
+                    <div class="featured-team-crest" style="background:${lg.colorBright}15;color:${lg.colorBright}">${teamRu(m.home).slice(0,3).toUpperCase()}</div>
+                    ${teamRu(m.home)}
+                  </div>
+                  <div class="featured-team">
+                    <div class="featured-team-crest" style="background:rgba(255,255,255,0.06);color:var(--gray-300)">${teamRu(m.away).slice(0,3).toUpperCase()}</div>
+                    ${teamRu(m.away)}
+                  </div>
+                </div>
+                <div class="featured-score">
+                  ${isLive ? `<div class="featured-score-text" style="color:var(--accent)">${score}</div>` : score ? `<div class="featured-score-text">${score}</div><div class="featured-score-status">${t('finished')}</div>` : `<div class="featured-score-text" style="color:var(--gray-400)">—</div><div class="featured-score-status">${m.time}</div>`}
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  // Group matches by league (exclude featured ones)
+  const featuredKeys = new Set(featured.map(m => matchKey(m)));
+  const regularMatches = matches.filter(m => !featuredKeys.has(matchKey(m)));
+  const byLeague = {};
+  regularMatches.forEach(m => {
+    if (!byLeague[m.league]) byLeague[m.league] = [];
+    byLeague[m.league].push(m);
+  });
+
+  let matchCards = '';
+  if (regularMatches.length) {
+    Object.keys(byLeague).forEach(lid => {
+      const lg = LEAGUES[lid];
+      matchCards += `
+        <div class="day-league-group-label" style="color:${lg.colorBright}">
+          <span class="day-league-logo">${lg.logo}</span>
+          ${lg.name}
+        </div>
+      `;
+      byLeague[lid].forEach(m => {
+        const isLive = !!m.live;
+        const hasDetail = true;
+        const midx = hasDetail ? renderedMatches.length : -1;
+        if (hasDetail) renderedMatches.push(m);
+        matchCards += `
+          <div class="day-match-card ${isLive ? 'live' : m.score ? 'played' : ''}" style="border-left:3px solid ${isLive ? 'var(--accent)' : m.score ? 'rgba(99,102,241,0.4)' : lg.colorBright + '22'};cursor:pointer" ${hasDetail ? `data-match-idx="${midx}"` : ''}>
+            <div class="day-match-time-block">
+              <div class="time">${m.time}</div>
+              <div class="broadcast">${isLive ? `<span class="live-badge"><span class="live-dot"></span>${t('live')}</span>` : lg.shortName}</div>
+            </div>
+            <div class="day-match-teams-block">
+              <div class="day-team-row">
+                <div class="team-crest" style="background:${lg.colorBright}15;color:${lg.colorBright}">${teamRu(m.home).slice(0,2).toUpperCase()}</div>
+                <div class="day-team-name">${teamRu(m.home)}</div>
+              </div>
+              <div class="day-team-row">
+                <div class="team-crest">${teamRu(m.away).slice(0,2).toUpperCase()}</div>
+                <div class="day-team-name">${teamRu(m.away)}</div>
+              </div>
+            </div>
+            <div class="day-match-score-block">
+              ${isLive ? `<div class="score" style="color:var(--accent)">${m.live.score}</div><div class="status" style="color:var(--accent)">${m.live.minute}'</div>` : m.score ? `<div class="score">${m.score}</div><div class="status">${t('finished')}</div>` : `<div class="score">—</div><div class="status">${t('upcoming')}</div>`}
+            </div>
+          </div>
+        `;
+      });
+    });
+  } else if (!featured.length) {
+    matchCards = `
+      <div class="no-matches">
+        <div class="no-matches-icon">⚽</div>
+        <div class="no-matches-text">${t('noMatchesDay')}</div>
+      </div>
+    `;
+  }
+
+  return `
+    <div class="day-view">
+      ${featuredHTML}
+      ${matchCards}
+    </div>
+  `;
+}
+
+const NEWS = {
+  epl: [
+    {date:'2026-02-10',tag:'transfer',comments:87,title:{ru:'Арсенал близок к подписанию полузащитника за £65 млн'}},
+    {date:'2026-02-09',tag:'injury',comments:42,title:{ru:'Салах пропустит 3 недели из-за травмы бедра'}},
+    {date:'2026-02-08',tag:'result',comments:215,title:{ru:'Ман Сити обыграл Ливерпуль на Энфилде впервые за 2 года'}},
+    {date:'2026-02-07',tag:'coach',comments:64,title:{ru:'Тен Хаг: «Мы показали характер в дерби с Тоттенхэмом»'}},
+    {date:'2026-02-06',tag:'transfer',comments:156,title:{ru:'Челси ведёт переговоры по трансферу Осимена'}},
+    {date:'2026-02-05',tag:'league',comments:31,title:{ru:'Премьер-лига утвердила новые правила финансового фэйр-плей'}},
+  ],
+  laliga: [
+    {date:'2026-02-10',tag:'result',comments:124,title:{ru:'Барселона разгромила Жирону 4-0 на Камп Ноу'}},
+    {date:'2026-02-09',tag:'transfer',comments:198,title:{ru:'Реал Мадрид объявил о продлении контракта Винисиуса'}},
+    {date:'2026-02-08',tag:'injury',comments:37,title:{ru:'Педри вернулся к тренировкам после травмы колена'}},
+    {date:'2026-02-07',tag:'coach',comments:53,title:{ru:'Симеоне: «Атлетико готов бороться за чемпионство»'}},
+    {date:'2026-02-05',tag:'league',comments:18,title:{ru:'Ла Лига побила рекорд посещаемости в этом сезоне'}},
+  ],
+  seriea: [
+    {date:'2026-02-10',tag:'result',comments:76,title:{ru:'Наполи укрепил лидерство после победы над Миланом'}},
+    {date:'2026-02-09',tag:'transfer',comments:44,title:{ru:'Ювентус подписал защитника из Бундеслиги'}},
+    {date:'2026-02-08',tag:'coach',comments:29,title:{ru:'Индзаги: «Интер нацелен на скудетто и ЛЧ»'}},
+    {date:'2026-02-06',tag:'injury',comments:61,title:{ru:'Леао выбыл на месяц — проблемы с голеностопом'}},
+    {date:'2026-02-05',tag:'league',comments:14,title:{ru:'Серия А представила новый формат плей-офф'}},
+  ],
+  bundesliga: [
+    {date:'2026-02-10',tag:'result',comments:92,title:{ru:'Байер Леверкузен прервал серию побед Баварии'}},
+    {date:'2026-02-09',tag:'transfer',comments:38,title:{ru:'Дортмунд заинтересован в молодом таланте из Аякса'}},
+    {date:'2026-02-07',tag:'coach',comments:47,title:{ru:'Компани: «Бавария будет доминировать во второй части сезона»'}},
+    {date:'2026-02-06',tag:'injury',comments:55,title:{ru:'Виртц пропустит две недели из-за мышечной травмы'}},
+    {date:'2026-02-05',tag:'league',comments:22,title:{ru:'Бундеслига объявила даты дерби во втором круге'}},
+  ],
+  ligue1: [
+    {date:'2026-02-10',tag:'result',comments:68,title:{ru:'ПСЖ одержал волевую победу над Лиллем'}},
+    {date:'2026-02-09',tag:'transfer',comments:41,title:{ru:'Марсель подписал полузащитника из Серии А'}},
+    {date:'2026-02-08',tag:'coach',comments:33,title:{ru:'Луис Энрике: «Дембеле — лучший игрок лиги»'}},
+    {date:'2026-02-06',tag:'injury',comments:27,title:{ru:'Мбаппе завершил реабилитацию — готов к дерби'}},
+    {date:'2026-02-05',tag:'league',comments:15,title:{ru:'Лига 1 получила рекордный телеконтракт'}},
+  ],
+  rpl: [
+    {date:'2026-02-10',tag:'result',comments:245,title:{ru:'Зенит обыграл Спартак 2-1 в главном дерби тура'}},
+    {date:'2026-02-09',tag:'transfer',comments:178,title:{ru:'Краснодар подписал бразильского нападающего за €12 млн'}},
+    {date:'2026-02-08',tag:'coach',comments:89,title:{ru:'Семак: «Зенит нацелен на золотой дубль»'}},
+    {date:'2026-02-07',tag:'injury',comments:56,title:{ru:'Чалов выбыл на 3 недели — повреждение мышцы бедра'}},
+    {date:'2026-02-05',tag:'league',comments:134,title:{ru:'РПЛ утвердила даты весенней части чемпионата'}},
+  ],
+  ucl: [
+    {date:'2026-02-09',tag:'league',comments:184,title:{ru:'Ливерпуль возглавил таблицу лигового этапа ЛЧ'}},
+    {date:'2026-02-07',tag:'coach',comments:96,title:{ru:'Анчелотти: «Реал готов защитить титул»'}},
+    {date:'2026-02-05',tag:'transfer',comments:143,title:{ru:'УЕФА представила новый формат ЛЧ с 36 командами'}},
+  ],
+  uel: [
+    {date:'2026-02-10',tag:'result',comments:87,title:{ru:'Лацио — лидер лигового этапа Лиги Европы'}},
+    {date:'2026-02-08',tag:'coach',comments:54,title:{ru:'Моуринью: «Фенербахче готов удивлять в плей-офф»'}},
+    {date:'2026-02-06',tag:'injury',comments:39,title:{ru:'Сон Хын Мин вернулся в обойму Тоттенхэма к матчу ЛЕ'}},
+    {date:'2026-02-05',tag:'league',comments:28,title:{ru:'Топ-8 Лиги Европы проходят напрямую в 1/8 финала'}},
+  ]
+};
+
+function renderNews() {
+  const allNews = [];
+  activeLeagues.forEach(lid => {
+    (NEWS[lid] || []).forEach(n => allNews.push({...n, league: lid}));
+  });
+  allNews.sort((a, b) => b.date.localeCompare(a.date));
+  const items = allNews.slice(0, 8);
+
+  if (!items.length) return '';
+
+  const tagColors = {
+    transfer: {bg:'rgba(100,140,255,0.1)',color:'#6E8CFF',ru:'Трансфер'},
+    injury: {bg:'rgba(255,80,80,0.1)',color:'#FF5050',ru:'Травма'},
+    result: {bg:'rgba(34,217,127,0.1)',color:'var(--green)',ru:'Матч'},
+    coach: {bg:'rgba(255,180,40,0.1)',color:'#FFB428',ru:'Тренер'},
+    league: {bg:'rgba(180,130,255,0.1)',color:'#B482FF',ru:'Лига'},
+  };
+
+  return `
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">
+        <div class="sidebar-card-title">${t('newsTitle')}</div>
+        <div class="sidebar-card-badge badge-hot">NEW</div>
+      </div>
+      <div class="news-list">
+        ${items.map(n => {
+          const tag = tagColors[n.tag] || tagColors.league;
+          const d = new Date(n.date + 'T00:00:00');
+          const dateStr = `${d.getDate()} ${t('monthsShortGen')[d.getMonth()]}`;
+          return `
+            <div class="news-item">
+              <div class="news-item-top">
+                <span class="news-league-logo">${LEAGUES[n.league].logo}</span>
+                <span class="news-tag" style="background:${tag.bg};color:${tag.color}">${tag.ru}</span>
+                <span class="news-date">${dateStr}</span>
+              </div>
+              <div class="news-title">${n.title.ru}</div>
+              <div class="news-bottom">
+                <span class="news-comments"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>${n.comments}</span>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+      <a href="#" class="news-all-link" onclick="event.preventDefault()">
+        ${t('allNews')}
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  `;
+}
+
+function teamNameFromAbbr(abbr) {
+  const map = {
+    // АПЛ
+    'ARS':'Арсенал','MCI':'Ман Сити','AVL':'Астон Вилла','MUN':'Ман Юнайтед',
+    'CFC':'Челси','LFC':'Ливерпуль','BRE':'Брентфорд','EVE':'Эвертон',
+    'SUN':'Сандерленд','FUL':'Фулхэм',
+    // Ла Лига
+    'BAR':'Барселона','RMA':'Реал Мадрид','ATM':'Атлетико Мадрид','ATH':'Атлетик Бильбао',
+    'VIL':'Вильярреал','RSO':'Реал Сосьедад','BET':'Бетис','GIR':'Жирона',
+    'SEV':'Севилья','CEL':'Сельта',
+    // Серия А
+    'NAP':'Наполи','INT':'Интер','JUV':'Ювентус','MIL':'Милан',
+    'ATA':'Аталанта','ROM':'Рома','LAZ':'Лацио','FIO':'Фиорентина',
+    'TOR':'Торино','BOL':'Болонья',
+    // Бундеслига
+    'BAY':'Бавария','DOR':'Дортмунд','LEV':'Леверкузен','RBL':'РБ Лейпциг',
+    'STU':'Штутгарт','FRA':'Айнтрахт','WOL':'Вольфсбург','FRE':'Фрайбург',
+    'LEN':'Юнион Берлин','BRE':'Брентфорд','STR':'Страсбур',
+    // Лига 1
+    'PSG':'ПСЖ','MON':'Монако','LIL':'Лилль','MAR':'Марсель',
+    'NIC':'Ницца','REN':'Ренн','LYO':'Лион','LEN':'Ланс',
+    // РПЛ
+    'ЗЕН':'Зенит','КРА':'Краснодар','СПА':'Спартак','ЦСК':'ЦСКА',
+    'ДИН':'Динамо','ЛОК':'Локомотив','РОС':'Ростов','РУБ':'Рубин',
+    'АХМ':'Ахмат','ОРН':'Оренбург',
+    // ЛЧ
+    'LIV':'Ливерпуль','ARS':'Арсенал','BAR':'Барселона','INT':'Интер',
+    'ATL':'Атлетико','BAY':'Бавария','RMA':'Реал Мадрид','MCI':'Ман Сити',
+    // ЛЕ
+    'LAZ':'Лацио','TOT':'Тоттенхэм','FRN':'Айнтрахт','AND':'Андерлехт',
+  };
+  return map[abbr] || abbr;
+}
+
+function renderStandings() {
+  // Tabs for each active league
+  const activeLids = [...activeLeagues];
+  if (!activeLids.includes(standingsLeague)) standingsLeague = activeLids[0];
+  const st = STANDINGS[standingsLeague] || [];
+
+  const tabs = activeLids.length > 1 ? `
+    <div class="standings-tabs">
+      ${activeLids.map(lid => `
+        <button class="standings-tab ${standingsLeague===lid?'active':''}" data-standings-league="${lid}">
+          <span class="league-logo">${LEAGUES[lid].logo}</span> ${LEAGUES[lid].shortName}
+        </button>
+      `).join('')}
+    </div>
+  ` : '';
+
+  return `
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">
+        <div class="sidebar-card-title">${t('standingsTitle')}</div>
+        <div class="sidebar-card-badge badge-new"><span class="standings-header-logo">${LEAGUES[standingsLeague].logo}</span> ${LEAGUES[standingsLeague].shortName}</div>
+      </div>
+      ${tabs}
+      <div class="standings-mini">
+        <div class="standing-row standing-row-header">
+          <div class="standing-pos">#</div>
+          <div class="standing-team">${t('club')}</div>
+          <div class="standing-val">${t('w')}</div>
+          <div class="standing-val">${t('d')}</div>
+          <div class="standing-val">${t('l')}</div>
+          <div class="standing-pts">${t('pts')}</div>
+        </div>
+        ${st.map(s => `
+          <div class="standing-row">
+            <div class="standing-pos">${s.pos}</div>
+            <div class="standing-team standing-team-link" data-team-abbr="${s.abbr}">${teamNameFromAbbr(s.abbr)}</div>
+            <div class="standing-val">${s.w}</div>
+            <div class="standing-val">${s.d}</div>
+            <div class="standing-val">${s.l}</div>
+            <div class="standing-pts">${s.pts}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function attachEvents() {
+  document.querySelectorAll('.view-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentView = btn.dataset.view;
+      render();
+    });
+  });
+
+  document.querySelectorAll('[data-nav]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const action = btn.dataset.nav;
+      if (action === 'today') currentDate = new Date(today);
+      else if (action === 'prev') navigate(-1);
+      else if (action === 'next') navigate(1);
+      render();
+    });
+  });
+
+  document.querySelectorAll('[data-day-click]').forEach(el => {
+    el.addEventListener('click', () => {
+      const [y, m, d] = el.dataset.dayClick.split('-').map(Number);
+      currentDate = new Date(y, m, d);
+      currentView = 'day';
+      render();
+    });
+  });
+
+  document.querySelectorAll('[data-standings-league]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      standingsLeague = btn.dataset.standingsLeague;
+      render();
+    });
+  });
+
+  // Standings team click — show team matches
+  document.querySelectorAll('.standing-team-link').forEach(el => {
+    el.addEventListener('click', () => {
+      const abbr = el.dataset.teamAbbr;
+      const teamName = teamNameFromAbbr(abbr);
+      showTeamMatches(teamName, standingsLeague);
+    });
+  });
+
+  // Match detail panel clicks
+  document.querySelectorAll('[data-match-idx]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const idx = parseInt(el.dataset.matchIdx);
+      if (renderedMatches[idx]) openMatchDetail(renderedMatches[idx]);
+    });
+  });
+}
+
+function navigate(dir) {
+  if (currentView === 'month') currentDate.setMonth(currentDate.getMonth() + dir);
+  else if (currentView === 'week') currentDate.setDate(currentDate.getDate() + dir * 7);
+  else currentDate.setDate(currentDate.getDate() + dir);
+}
+
+let detailPanelOpen = false;
+
+function showTeamMatches(teamNameRu, leagueId) {
+  // Find original English name from TEAM_RU
+  let engName = teamNameRu;
+  for (const [en, ru] of Object.entries(TEAM_RU)) {
+    if (ru === teamNameRu) { engName = en; break; }
+  }
+  // Also check abbr map reverse
+  const abbrMap = {
+    'Арсенал':'Arsenal','Ман Сити':'Man City','Ливерпуль':'Liverpool','Челси':'Chelsea',
+    'Ман Юнайтед':'Man Utd','Тоттенхэм':'Tottenham','Астон Вилла':'Aston Villa',
+    'Барселона':'Barcelona','Реал Мадрид':'Real Madrid','Атлетико Мадрид':'Atletico Madrid',
+    'Наполи':'Napoli','Интер':'Inter','Ювентус':'Juventus','Милан':'AC Milan',
+    'Бавария':'Bayern Munich','Дортмунд':'Dortmund','Леверкузен':'Leverkusen',
+    'ПСЖ':'PSG','Марсель':'Marseille','Монако':'Monaco','Лилль':'Lille',
+    'Зенит':'Zenit','Спартак':'Spartak','ЦСКА':'CSKA','Динамо':'Dynamo',
+    'Локомотив':'Lokomotiv','Краснодар':'Krasnodar','Ростов':'Rostov','Рубин':'Rubin',
+    'Атлетико':'Atletico Madrid','Лацио':'Lazio',
+  };
+  const searchName = abbrMap[teamNameRu] || engName;
+
+  const allMatches = MATCHES[leagueId] || [];
+  const teamMatches = allMatches.filter(m =>
+    m.home === searchName || m.away === searchName ||
+    m.home.includes(searchName) || m.away.includes(searchName)
+  ).slice(0, 10);
+
+  const lg = LEAGUES[leagueId];
+  const overlay = document.createElement('div');
+  overlay.className = 'match-detail-overlay';
+  overlay.onclick = () => { overlay.classList.remove('open'); panel.classList.remove('open'); setTimeout(()=>{overlay.remove();panel.remove()},350); };
+
+  const panel = document.createElement('div');
+  panel.className = 'match-detail-panel';
+  panel.onclick = e => e.stopPropagation();
+
+  panel.innerHTML = `
+    <div class="mdp-header">
+      <div class="mdp-league" style="color:${lg.colorBright}">${lg.logo} ${lg.shortName}</div>
+      <button class="mdp-close" onclick="this.closest('.match-detail-panel').previousElementSibling.click()">✕</button>
+    </div>
+    <div style="text-align:center;padding:16px 0 8px">
+      <div style="width:52px;height:52px;margin:0 auto 8px">${teamCrest(searchName)}</div>
+      <div style="font-family:'Oswald',sans-serif;font-size:20px;font-weight:600;letter-spacing:0.5px">${teamNameRu}</div>
+    </div>
+    <div class="mdp-section">
+      <div class="mdp-section-title">📅 Матчи</div>
+      ${teamMatches.length ? teamMatches.map(m => {
+        const isHome = m.home === searchName;
+        const opponent = isHome ? m.away : m.home;
+        const prefix = isHome ? 'vs' : '@';
+        const scoreStr = m.score || '—';
+        const isPast = !!m.score;
+        return `<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);margin-bottom:6px;cursor:pointer" data-team-match='${JSON.stringify(m)}'>
+          <div style="font-size:12px;color:var(--gray-400);min-width:70px">${m.date.slice(5)}</div>
+          <div style="flex:1;font-size:13px;font-weight:500"><span style="color:var(--gray-500);margin-right:4px">${prefix}</span> ${teamRu(opponent)}</div>
+          <div style="font-family:'Oswald',sans-serif;font-size:15px;font-weight:600;color:${isPast ? '#a5b4fc' : 'var(--gray-400)'}">${scoreStr}</div>
+        </div>`;
+      }).join('') : '<div style="text-align:center;color:var(--gray-500);padding:16px">Нет матчей</div>'}
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+  document.body.appendChild(panel);
+  requestAnimationFrame(() => { overlay.classList.add('open'); panel.classList.add('open'); });
+
+  // Make team matches clickable to open detail
+  panel.querySelectorAll('[data-team-match]').forEach(el => {
+    el.addEventListener('click', () => {
+      const matchData = JSON.parse(el.dataset.teamMatch);
+      matchData.league = leagueId;
+      overlay.classList.remove('open'); panel.classList.remove('open');
+      setTimeout(() => { overlay.remove(); panel.remove(); openMatchDetail(matchData); }, 350);
+    });
+  });
+}
+
+function openMatchDetail(m) {
+  closeMatchDetail();
+  const lg = LEAGUES[m.league];
+  const key = matchKey(m);
+  const events = MATCH_EVENTS[key] || [];
+  const isLive = !!m.live;
+  const score = isLive ? m.live.score : m.score;
+  const statusLabel = isLive ? t('liveNow') : t('fullTime');
+  const statusClass = isLive ? 'mdp-status-live' : 'mdp-status-ft';
+
+  const eventIcons = {
+    goal: '⚽',
+    yellow: '🟨',
+    red: '🟥',
+    sub: '🔄'
+  };
+
+  const overlay = document.createElement('div');
+  overlay.className = 'match-detail-overlay';
+  overlay.onclick = closeMatchDetail;
+
+  const panel = document.createElement('div');
+  panel.className = 'match-detail-panel';
+  panel.onclick = e => e.stopPropagation();
+
+  panel.innerHTML = `
+    <div class="mdp-header">
+      <div class="mdp-league" style="color:${lg.colorBright}">
+        ${lg.logo} ${lg.name}
+      </div>
+      <button class="mdp-close" onclick="closeMatchDetail()">✕</button>
+    </div>
+    <div class="mdp-scoreboard">
+      <div class="mdp-teams-row">
+        <div class="mdp-team">
+          <div class="mdp-team-crest">${teamCrest(m.home)}</div>
+          <div class="mdp-team-name">${teamRu(m.home)}</div>
+        </div>
+        <div class="mdp-score-center">
+          <div class="mdp-score-big" style="${isLive ? 'color:var(--accent)' : ''}">${score}</div>
+          <div class="mdp-status-label ${statusClass}">${statusLabel}${isLive ? ' · ' + m.live.minute + "'" : ''}</div>
+        </div>
+        <div class="mdp-team">
+          <div class="mdp-team-crest">${teamCrest(m.away)}</div>
+          <div class="mdp-team-name">${teamRu(m.away)}</div>
+        </div>
+      </div>
+      <div class="mdp-info-row">
+        <div class="mdp-info-item">🕐 ${t('kickoff')}: ${m.time}</div>
+        <div class="mdp-info-item">📅 ${m.date}</div>
+      </div>
+    </div>
+    ${events.length ? `
+      <div class="mdp-section">
+        <div class="mdp-section-title">${t('matchEvents')}</div>
+        ${events.map(ev => `
+          <div class="mdp-event">
+            <div class="mdp-event-minute">${ev.min}'</div>
+            <div class="mdp-event-icon ${ev.type}">${eventIcons[ev.type] || '•'}</div>
+            <div class="mdp-event-text">
+              ${ev.player}
+              ${ev.detail ? `<span style="color:var(--gray-500);font-size:11px;margin-left:4px">(${ev.detail})</span>` : ''}
+            </div>
+            <div class="mdp-event-team">${ev.team === 'home' ? teamRu(m.home) : teamRu(m.away)}</div>
+          </div>
+        `).join('')}
+      </div>
+    ` : ''}
+    ${(() => {
+      const ref = getMatchReferee(m);
+      if (!ref) return '';
+      return `
+        <div class="mdp-section">
+          <div class="mdp-section-title">👨‍⚖️ Судейская бригада</div>
+          <div class="mdp-referee-grid">
+            <div class="mdp-ref-row">
+              <div class="mdp-ref-role">Главный судья</div>
+              <div class="mdp-ref-name">${ref.main}</div>
+            </div>
+            <div class="mdp-ref-row">
+              <div class="mdp-ref-role">Ассистенты</div>
+              <div class="mdp-ref-name">${ref.assistants.join(', ')}</div>
+            </div>
+            <div class="mdp-ref-row">
+              <div class="mdp-ref-role">VAR</div>
+              <div class="mdp-ref-name">${ref.var}</div>
+            </div>
+            <div class="mdp-ref-row">
+              <div class="mdp-ref-role">4-й судья</div>
+              <div class="mdp-ref-name">${ref.fourth}</div>
+            </div>
+          </div>
+        </div>
+      `;
+    })()}
+  `;
+
+  document.body.appendChild(overlay);
+  document.body.appendChild(panel);
+
+  requestAnimationFrame(() => {
+    overlay.classList.add('open');
+    panel.classList.add('open');
+  });
+
+  detailPanelOpen = true;
+  document.addEventListener('keydown', detailEscHandler);
+}
+
+function closeMatchDetail() {
+  const overlay = document.querySelector('.match-detail-overlay');
+  const panel = document.querySelector('.match-detail-panel');
+  if (!overlay && !panel) return;
+  if (overlay) { overlay.classList.remove('open'); }
+  if (panel) { panel.classList.remove('open'); }
+  setTimeout(() => {
+    overlay?.remove();
+    panel?.remove();
+  }, 350);
+  detailPanelOpen = false;
+  document.removeEventListener('keydown', detailEscHandler);
+}
+
+function detailEscHandler(e) { if (e.key === 'Escape') closeMatchDetail(); }
+
+(function initLogoAnimation() {
+  const icon = document.getElementById('logoIcon');
+  const faces = icon.querySelectorAll('.logo-face');
+  const leagueIds = ['epl','laliga','seriea','bundesliga','ligue1'];
+  const gradients = [
+    'linear-gradient(135deg, var(--accent), #F59E0B)',
+    'linear-gradient(135deg, #3D195B, #6B2D8B)',
+    'linear-gradient(135deg, #EE2524, #FF6B44)',
+    'linear-gradient(135deg, #024494, #1565C0)',
+    'linear-gradient(135deg, #D20515, #FF3333)',
+    'linear-gradient(135deg, #091C3E, #1A3A6E)',
+  ];
+
+  // Fill league logo faces
+  faces.forEach(f => {
+    const lid = f.dataset.league;
+    if (lid && LEAGUE_LOGOS[lid]) f.innerHTML = LEAGUE_LOGOS[lid];
+  });
+
+  let current = 0;
+  function cycleLogo() {
+    const prev = faces[current];
+    prev.classList.remove('active');
+    prev.classList.add('exit');
+    current = (current + 1) % faces.length;
+    icon.style.background = gradients[current];
+    setTimeout(() => {
+      prev.classList.remove('exit');
+      faces[current].classList.add('active');
+    }, 100);
+  }
+  setInterval(cycleLogo, 10000);
+})();
+
+renderLeagueTabs();
+render();
+</script>
+</body>
+</html>
