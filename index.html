@@ -34,9 +34,6 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
 }
-html {
-  overflow-x: hidden;
-}
 
 body::before {
   content: '';
@@ -450,7 +447,6 @@ body::before {
   grid-template-columns: 280px 1fr 320px;
   gap: 20px;
   min-height: calc(100vh - 112px);
-  overflow-x: hidden;
 }
 
 .sidebar-left, .sidebar-right {
@@ -464,46 +460,29 @@ body::before {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  min-width: 0;
-  overflow: hidden;
 }
 
 .calendar-toolbar {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-}
-.calendar-toolbar-top {
-  display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
+  flex-wrap: wrap;
+  gap: 12px;
 }
+
 .calendar-title-group {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
+  align-items: baseline;
+  gap: 14px;
 }
+
 .calendar-title {
   font-family: 'Oswald', sans-serif;
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 600;
-  letter-spacing: 1.5px;
-  text-align: center;
-  background: linear-gradient(135deg, #e0e7ff 0%, #818cf8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  letter-spacing: 1px;
 }
-.calendar-chips-row {
-  display: flex;
-  justify-content: center;
-  gap: 6px;
-  flex-wrap: wrap;
-  margin-top: 4px;
-}
+
 .calendar-subtitle {
   font-size: 13px;
   color: var(--gray-400);
@@ -627,7 +606,6 @@ body::before {
   overflow: hidden;
   flex: 1;
   animation: fadeIn 0.25s ease-out;
-  max-width: 100%;
 }
 
 @keyframes fadeIn {
@@ -638,7 +616,7 @@ body::before {
 /* MONTH VIEW */
 .month-header {
   display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-template-columns: repeat(7, 1fr);
   border-bottom: 1px solid var(--border);
 }
 
@@ -655,17 +633,14 @@ body::before {
 
 .month-grid {
   display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-template-columns: repeat(7, 1fr);
   grid-auto-rows: minmax(96px, 1fr);
-  overflow: hidden;
 }
 
 .month-day {
   border: 1px solid rgba(255,255,255,0.02);
   padding: 6px;
   min-height: 96px;
-  min-width: 0;
-  overflow: hidden;
   transition: all 0.15s;
   cursor: pointer;
 }
@@ -1217,13 +1192,6 @@ body::before {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.standing-team-link {
-  cursor: pointer;
-  transition: color 0.2s;
-}
-.standing-team-link:hover {
-  color: #818cf8;
-}
 
 .standing-val {
   text-align: center;
@@ -1425,9 +1393,9 @@ body::before {
 
   .main-layout { padding: 10px 8px; gap: 14px; }
 
-  .calendar-toolbar { gap: 10px; }
-  .calendar-toolbar-top { justify-content: center; gap: 10px; }
-  .calendar-title { font-size: 22px; }
+  .calendar-toolbar { flex-direction: column; align-items: stretch; gap: 10px; }
+  .calendar-toolbar > div:last-child { justify-content: space-between; }
+  .calendar-title { font-size: 20px; }
   .view-btn { padding: 6px 12px; font-size: 11px; }
   .nav-btn { width: 32px; height: 32px; font-size: 12px; }
   .today-btn { padding: 6px 12px; font-size: 10px; }
@@ -1498,7 +1466,7 @@ body::before {
   .month-day { min-height: 60px; padding: 3px 2px; }
   .month-day-number { font-size: 10px; }
   .league-tab { padding: 5px 7px; font-size: 10px; }
-  .calendar-title { font-size: 19px; letter-spacing: 1px; }
+  .calendar-title { font-size: 17px; }
   .week-day-row { grid-template-columns: 48px 1fr; }
   .week-day-num { font-size: 17px; }
   .day-header-big .day-number { font-size: 40px; }
@@ -1856,10 +1824,6 @@ body::before {
   background: rgba(239,68,68,0.15);
   color: #EF4444;
 }
-.mdp-status-upcoming {
-  background: rgba(34,217,127,0.1);
-  color: var(--green);
-}
 
 .mdp-info-row {
   display: flex;
@@ -2203,6 +2167,7 @@ body::before {
 <div class="main-layout" id="app"></div>
 
 <script>
+// =================== LEAGUE CONFIG ===================
 // League logo SVGs — stylized iconic representations
 const LEAGUE_LOGOS = {
   epl: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="12" fill="#3D195B"/><g transform="translate(2.5, 2) scale(0.8)" fill="#fff"><path d="M11.176 0s-.681 1.938-.867 2.527C9.844 2.202 8.386 1.194 7.78.775c.14.806.356 2.124.403 2.403-.124-.093-.821-.698-1.875-1.194.589.682 1.008 1.736 1.271 2.588a10.566 10.566 0 0 1 5.238-1.379c.977 0 1.94.14 2.854.403.093-.884.279-1.968.682-2.758-.915.728-1.474 1.503-1.551 1.596-.031-.186-.093-1.52-.17-2.434-.372.403-1.8 2.016-2.063 2.264C12.384 1.938 11.176 0 11.176 0zm1.674 3.86c-1.674 0-3.3.386-4.696 1.115.713.046 1.224.668 1.395 1.164-.558-.45-1.442-.667-1.985-.078-.511.589-.464 1.688.047 2.572-1.193-.605-1.194-2.185-.775-2.867A10.392 10.392 0 0 0 3.61 9.594l1.07.172c-1.24 1.426-2.107 3.953-2.107 5.146l1.75-.543c-.31 1.054-.401 4.602.653 6.385 0 0 1.38-.96 2.945-3.363.65 2.17.356 3.985 0 5.767 2.82 1.581 6.09.696 8.012-.683l.357 1.35c2.248-1.489 3.488-3.628 3.72-6.124l.837.93c1.286-3.829.28-6.883-1.565-9.502l-.078.637-.79-.87s.17-.077.31-.263c.03-.078-.046-.495-.371-.774-.31.078-.56.264-.684.45a3.222 3.222 0 0 0-.93-.543c.062.077.604.79.65 1.007.466.388 1.102.837 1.52 1.395-.34-.403-1.984-.497-2.728-.078 0 0-.744-.868-1.426-1.473-.14-.511.326-.96.326-.96s-.48-.03-.93.42c-.682-.512-1.55-.745-1.55-.745-.961.14-1.612.82-1.612.82.217.14.512.327.776.42.511.217 1.006.139 1.332.139.263 0 .636.078.636.078s.635.495 1.565 1.565c-1.426-.574-2.915.062-3.969-.45-1.24-.62-1.146-1.595-1.146-1.595s-.836-.11-.836-.141c0 0 .618-.82 1.548-1.1l-.464-.402c.558-.465 1.534-1.085 3.115-1.24 0 0 .683.262 2.11 1.285.232-.326.308-1.008.308-1.008.728.248 2.217 1.333 2.806 1.984-.325-.759-.559-1.223-.636-2.013-.357-.357-1.24-1.101-3.069-1.551.295.605.264 1.115.264 1.115-.34-.45-1.055-1.146-1.55-1.332-.295-.015-.605-.047-.93-.047zm3.271 7.068a4.323 4.323 0 0 0 1.256.697v1.348c-.465.403-1.985 1.675-3.008 1.566-.573-1.1-1.115-2.107-1.115-2.107s1.565-1.318 2.867-1.504zm2.975.031c.465 1.131.59 2.48.078 3.379-.28-.605-.636-.947-1.008-1.35v-1.347s.418-.264.93-.682zm-.977 3.395c.465.511.559 1.068.559 1.068-.202 1.131-.836 1.846-1.301 2.14.046-.821-.172-1.519-.172-1.519-.34.372-1.13.743-1.596.836l-.697-1.3c.822-.032 2.201-1.194 2.201-1.194l1.006-.031z"/></g></svg>`,
@@ -2300,6 +2265,7 @@ const LEAGUES = {
   }
 };
 
+// =================== MATCH DATA ===================
 const MATCHES = {
   epl: [
     // Past
@@ -2766,6 +2732,10 @@ const MATCH_EVENTS = {
     {min:51,type:'yellow',player:'A. Smith',team:'away'},
   ],
 };
+
+
+
+
 const I18N = {
   ru: {
     months: ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
@@ -2912,6 +2882,7 @@ function getMatchReferee(m) {
   return MATCH_REFEREES[key1] || MATCH_REFEREES[key2] || null;
 }
 
+// =================== AUTH POPUP ===================
 function openAuthPopup() {
   const overlay = document.getElementById('authOverlay');
   overlay.classList.add('open');
@@ -2945,6 +2916,7 @@ let activeLeagues = new Set(['epl']);
 let standingsLeague = 'epl';
 let renderedMatches = []; // for click-to-detail lookup
 
+// =================== SEASONS ===================
 const SEASONS = [
   { id: '2025-26', label: '2025 / 26', startMonth: [2025, 7] },
   { id: '2024-25', label: '2024 / 25', startMonth: [2024, 7] },
@@ -3003,6 +2975,7 @@ function selectSeason(seasonId) {
   render();
 }
 
+// =================== HELPERS ===================
 function getAllActiveMatches() {
   let all = [];
   activeLeagues.forEach(lid => {
@@ -3047,6 +3020,7 @@ function leagueColor(lid) {
   return LEAGUES[lid]?.colorBright || '#888';
 }
 
+// =================== LEAGUE TABS ===================
 function renderLeagueTabs() {
   const container = document.getElementById('leagueTabs');
   const allIds = Object.keys(LEAGUES);
@@ -3090,6 +3064,7 @@ function renderLeagueTabs() {
   });
 }
 
+// =================== RENDER ===================
 function render() {
   renderedMatches = [];
   const app = document.getElementById('app');
@@ -3116,12 +3091,12 @@ function renderToolbar() {
   const y = currentDate.getFullYear();
   const m = currentDate.getMonth();
   let titleText = '';
-  if (currentView === 'month') titleText = `${t('months')[m]}`;
+  if (currentView === 'month') titleText = `${t('months')[m]} ${y}`;
   else if (currentView === 'week') {
     const wk = getWeekDates(currentDate);
-    titleText = `${wk[0].getDate()} ${t('monthsShortGen')[wk[0].getMonth()]} — ${wk[6].getDate()} ${t('monthsShortGen')[wk[6].getMonth()]}`;
+    titleText = `${wk[0].getDate()} ${t('monthsShortGen')[wk[0].getMonth()]} — ${wk[6].getDate()} ${t('monthsShortGen')[wk[6].getMonth()]} ${wk[6].getFullYear()}`;
   } else {
-    titleText = `${currentDate.getDate()} ${t('monthsGen')[m]}`;
+    titleText = `${currentDate.getDate()} ${t('monthsGen')[m]} ${y}`;
   }
 
   const chips = [...activeLeagues].map(lid => {
@@ -3131,11 +3106,13 @@ function renderToolbar() {
 
   return `
     <div class="calendar-toolbar">
-      <div class="calendar-title-group">
-        <div class="calendar-title">${titleText}</div>
-        <div class="calendar-chips-row">${chips}</div>
+      <div>
+        <div class="calendar-title-group">
+          <div class="calendar-title">${titleText}</div>
+        </div>
+        <div class="active-leagues-display" style="margin-top:4px">${chips}</div>
       </div>
-      <div class="calendar-toolbar-top">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
         <div class="view-switcher">
           ${['day','week','month'].map(v => `
             <button class="view-btn ${currentView===v?'active':''}" data-view="${v}">
@@ -3345,42 +3322,43 @@ function renderDay() {
   `;
 }
 
+// =================== NEWS DATA ===================
 const NEWS = {
   epl: [
-    {date:'2026-02-10',tag:'transfer',comments:87,title:{ru:'Арсенал близок к подписанию полузащитника за £65 млн'}},
-    {date:'2026-02-09',tag:'injury',comments:42,title:{ru:'Салах пропустит 3 недели из-за травмы бедра'}},
-    {date:'2026-02-08',tag:'result',comments:215,title:{ru:'Ман Сити обыграл Ливерпуль на Энфилде впервые за 2 года'}},
-    {date:'2026-02-07',tag:'coach',comments:64,title:{ru:'Тен Хаг: «Мы показали характер в дерби с Тоттенхэмом»'}},
-    {date:'2026-02-06',tag:'transfer',comments:156,title:{ru:'Челси ведёт переговоры по трансферу Осимена'}},
-    {date:'2026-02-05',tag:'league',comments:31,title:{ru:'Премьер-лига утвердила новые правила финансового фэйр-плей'}},
+    {date:'2026-02-10',tag:'transfer',comments:87,title:{ru:'Арсенал близок к подписанию полузащитника за £65 млн',en:'Arsenal close to signing midfielder for £65m'}},
+    {date:'2026-02-09',tag:'injury',comments:42,title:{ru:'Салах пропустит 3 недели из-за травмы бедра',en:'Salah to miss 3 weeks with thigh injury'}},
+    {date:'2026-02-08',tag:'result',comments:215,title:{ru:'Ман Сити обыграл Ливерпуль на Энфилде впервые за 2 года',en:'Man City beat Liverpool at Anfield for first time in 2 years'}},
+    {date:'2026-02-07',tag:'coach',comments:64,title:{ru:'Тен Хаг: «Мы показали характер в дерби с Тоттенхэмом»',en:'Ten Hag: "We showed character in Tottenham derby"'}},
+    {date:'2026-02-06',tag:'transfer',comments:156,title:{ru:'Челси ведёт переговоры по трансферу Осимена',en:'Chelsea in talks over Osimhen transfer'}},
+    {date:'2026-02-05',tag:'league',comments:31,title:{ru:'Премьер-лига утвердила новые правила финансового фэйр-плей',en:'Premier League approves new financial fair play rules'}},
   ],
   laliga: [
-    {date:'2026-02-10',tag:'result',comments:124,title:{ru:'Барселона разгромила Жирону 4-0 на Камп Ноу'}},
-    {date:'2026-02-09',tag:'transfer',comments:198,title:{ru:'Реал Мадрид объявил о продлении контракта Винисиуса'}},
-    {date:'2026-02-08',tag:'injury',comments:37,title:{ru:'Педри вернулся к тренировкам после травмы колена'}},
-    {date:'2026-02-07',tag:'coach',comments:53,title:{ru:'Симеоне: «Атлетико готов бороться за чемпионство»'}},
-    {date:'2026-02-05',tag:'league',comments:18,title:{ru:'Ла Лига побила рекорд посещаемости в этом сезоне'}},
+    {date:'2026-02-10',tag:'result',comments:124,title:{ru:'Барселона разгромила Жирону 4-0 на Камп Ноу',en:'Barcelona thrash Girona 4-0 at Camp Nou'}},
+    {date:'2026-02-09',tag:'transfer',comments:198,title:{ru:'Реал Мадрид объявил о продлении контракта Винисиуса',en:'Real Madrid announce Vinícius contract extension'}},
+    {date:'2026-02-08',tag:'injury',comments:37,title:{ru:'Педри вернулся к тренировкам после травмы колена',en:'Pedri returns to training after knee injury'}},
+    {date:'2026-02-07',tag:'coach',comments:53,title:{ru:'Симеоне: «Атлетико готов бороться за чемпионство»',en:'Simeone: "Atlético ready to fight for the title"'}},
+    {date:'2026-02-05',tag:'league',comments:18,title:{ru:'Ла Лига побила рекорд посещаемости в этом сезоне',en:'La Liga breaks attendance record this season'}},
   ],
   seriea: [
-    {date:'2026-02-10',tag:'result',comments:76,title:{ru:'Наполи укрепил лидерство после победы над Миланом'}},
-    {date:'2026-02-09',tag:'transfer',comments:44,title:{ru:'Ювентус подписал защитника из Бундеслиги'}},
-    {date:'2026-02-08',tag:'coach',comments:29,title:{ru:'Индзаги: «Интер нацелен на скудетто и ЛЧ»'}},
-    {date:'2026-02-06',tag:'injury',comments:61,title:{ru:'Леао выбыл на месяц — проблемы с голеностопом'}},
-    {date:'2026-02-05',tag:'league',comments:14,title:{ru:'Серия А представила новый формат плей-офф'}},
+    {date:'2026-02-10',tag:'result',comments:76,title:{ru:'Наполи укрепил лидерство после победы над Миланом',en:'Napoli extend lead after victory over Milan'}},
+    {date:'2026-02-09',tag:'transfer',comments:44,title:{ru:'Ювентус подписал защитника из Бундеслиги',en:'Juventus sign defender from Bundesliga'}},
+    {date:'2026-02-08',tag:'coach',comments:29,title:{ru:'Индзаги: «Интер нацелен на скудетто и ЛЧ»',en:'Inzaghi: "Inter targeting Scudetto and UCL"'}},
+    {date:'2026-02-06',tag:'injury',comments:61,title:{ru:'Леао выбыл на месяц — проблемы с голеностопом',en:'Leão out for a month with ankle problem'}},
+    {date:'2026-02-05',tag:'league',comments:14,title:{ru:'Серия А представила новый формат плей-офф',en:'Serie A reveals new playoff format'}},
   ],
   bundesliga: [
-    {date:'2026-02-10',tag:'result',comments:92,title:{ru:'Байер Леверкузен прервал серию побед Баварии'}},
-    {date:'2026-02-09',tag:'transfer',comments:38,title:{ru:'Дортмунд заинтересован в молодом таланте из Аякса'}},
-    {date:'2026-02-07',tag:'coach',comments:47,title:{ru:'Компани: «Бавария будет доминировать во второй части сезона»'}},
-    {date:'2026-02-06',tag:'injury',comments:55,title:{ru:'Виртц пропустит две недели из-за мышечной травмы'}},
-    {date:'2026-02-05',tag:'league',comments:22,title:{ru:'Бундеслига объявила даты дерби во втором круге'}},
+    {date:'2026-02-10',tag:'result',comments:92,title:{ru:'Байер Леверкузен прервал серию побед Баварии',en:'Bayer Leverkusen end Bayern winning streak'}},
+    {date:'2026-02-09',tag:'transfer',comments:38,title:{ru:'Дортмунд заинтересован в молодом таланте из Аякса',en:'Dortmund interested in young Ajax talent'}},
+    {date:'2026-02-07',tag:'coach',comments:47,title:{ru:'Компани: «Бавария будет доминировать во второй части сезона»',en:'Kompany: "Bayern will dominate the second half"'}},
+    {date:'2026-02-06',tag:'injury',comments:55,title:{ru:'Виртц пропустит две недели из-за мышечной травмы',en:'Wirtz to miss two weeks with muscle injury'}},
+    {date:'2026-02-05',tag:'league',comments:22,title:{ru:'Бундеслига объявила даты дерби во втором круге',en:'Bundesliga announces second-round derby dates'}},
   ],
   ligue1: [
-    {date:'2026-02-10',tag:'result',comments:68,title:{ru:'ПСЖ одержал волевую победу над Лиллем'}},
-    {date:'2026-02-09',tag:'transfer',comments:41,title:{ru:'Марсель подписал полузащитника из Серии А'}},
-    {date:'2026-02-08',tag:'coach',comments:33,title:{ru:'Луис Энрике: «Дембеле — лучший игрок лиги»'}},
-    {date:'2026-02-06',tag:'injury',comments:27,title:{ru:'Мбаппе завершил реабилитацию — готов к дерби'}},
-    {date:'2026-02-05',tag:'league',comments:15,title:{ru:'Лига 1 получила рекордный телеконтракт'}},
+    {date:'2026-02-10',tag:'result',comments:68,title:{ru:'ПСЖ одержал волевую победу над Лиллем',en:'PSG stage comeback win over Lille'}},
+    {date:'2026-02-09',tag:'transfer',comments:41,title:{ru:'Марсель подписал полузащитника из Серии А',en:'Marseille sign midfielder from Serie A'}},
+    {date:'2026-02-08',tag:'coach',comments:33,title:{ru:'Луис Энрике: «Дембеле — лучший игрок лиги»',en:'Luis Enrique: "Dembélé is the best player in the league"'}},
+    {date:'2026-02-06',tag:'injury',comments:27,title:{ru:'Мбаппе завершил реабилитацию — готов к дерби',en:'Mbappé completes rehab — ready for derby'}},
+    {date:'2026-02-05',tag:'league',comments:15,title:{ru:'Лига 1 получила рекордный телеконтракт',en:'Ligue 1 secures record TV deal'}},
   ],
   rpl: [
     {date:'2026-02-10',tag:'result',comments:245,title:{ru:'Зенит обыграл Спартак 2-1 в главном дерби тура'}},
@@ -3390,15 +3368,15 @@ const NEWS = {
     {date:'2026-02-05',tag:'league',comments:134,title:{ru:'РПЛ утвердила даты весенней части чемпионата'}},
   ],
   ucl: [
-    {date:'2026-02-09',tag:'league',comments:184,title:{ru:'Ливерпуль возглавил таблицу лигового этапа ЛЧ'}},
-    {date:'2026-02-07',tag:'coach',comments:96,title:{ru:'Анчелотти: «Реал готов защитить титул»'}},
-    {date:'2026-02-05',tag:'transfer',comments:143,title:{ru:'УЕФА представила новый формат ЛЧ с 36 командами'}},
+    {date:'2026-02-09',tag:'league',comments:184,title:{ru:'Ливерпуль возглавил таблицу лигового этапа ЛЧ',en:'Liverpool top the UCL league phase standings'}},
+    {date:'2026-02-07',tag:'coach',comments:96,title:{ru:'Анчелотти: «Реал готов защитить титул»',en:'Ancelotti: "Real Madrid ready to defend the title"'}},
+    {date:'2026-02-05',tag:'transfer',comments:143,title:{ru:'УЕФА представила новый формат ЛЧ с 36 командами',en:'UEFA unveils new 36-team Champions League format'}},
   ],
   uel: [
-    {date:'2026-02-10',tag:'result',comments:87,title:{ru:'Лацио — лидер лигового этапа Лиги Европы'}},
-    {date:'2026-02-08',tag:'coach',comments:54,title:{ru:'Моуринью: «Фенербахче готов удивлять в плей-офф»'}},
-    {date:'2026-02-06',tag:'injury',comments:39,title:{ru:'Сон Хын Мин вернулся в обойму Тоттенхэма к матчу ЛЕ'}},
-    {date:'2026-02-05',tag:'league',comments:28,title:{ru:'Топ-8 Лиги Европы проходят напрямую в 1/8 финала'}},
+    {date:'2026-02-10',tag:'result',comments:87,title:{ru:'Лацио — лидер лигового этапа Лиги Европы',en:'Lazio lead Europa League league phase'}},
+    {date:'2026-02-08',tag:'coach',comments:54,title:{ru:'Моуринью: «Фенербахче готов удивлять в плей-офф»',en:'Mourinho: "Fenerbahçe ready to surprise in playoffs"'}},
+    {date:'2026-02-06',tag:'injury',comments:39,title:{ru:'Сон Хын Мин вернулся в обойму Тоттенхэма к матчу ЛЕ',en:'Son Heung-min back in Spurs squad for UEL'}},
+    {date:'2026-02-05',tag:'league',comments:28,title:{ru:'Топ-8 Лиги Европы проходят напрямую в 1/8 финала',en:'UEL top 8 qualify directly to Round of 16'}},
   ]
 };
 
@@ -3413,11 +3391,11 @@ function renderNews() {
   if (!items.length) return '';
 
   const tagColors = {
-    transfer: {bg:'rgba(100,140,255,0.1)',color:'#6E8CFF',ru:'Трансфер'},
-    injury: {bg:'rgba(255,80,80,0.1)',color:'#FF5050',ru:'Травма'},
-    result: {bg:'rgba(34,217,127,0.1)',color:'var(--green)',ru:'Матч'},
-    coach: {bg:'rgba(255,180,40,0.1)',color:'#FFB428',ru:'Тренер'},
-    league: {bg:'rgba(180,130,255,0.1)',color:'#B482FF',ru:'Лига'},
+    transfer: {bg:'rgba(100,140,255,0.1)',color:'#6E8CFF',ru:'Трансфер',en:'Transfer'},
+    injury: {bg:'rgba(255,80,80,0.1)',color:'#FF5050',ru:'Травма',en:'Injury'},
+    result: {bg:'rgba(34,217,127,0.1)',color:'var(--green)',ru:'Матч',en:'Result'},
+    coach: {bg:'rgba(255,180,40,0.1)',color:'#FFB428',ru:'Тренер',en:'Coach'},
+    league: {bg:'rgba(180,130,255,0.1)',color:'#B482FF',ru:'Лига',en:'League'},
   };
 
   return `
@@ -3523,7 +3501,7 @@ function renderStandings() {
         ${st.map(s => `
           <div class="standing-row">
             <div class="standing-pos">${s.pos}</div>
-            <div class="standing-team standing-team-link" data-team-abbr="${s.abbr}">${teamNameFromAbbr(s.abbr)}</div>
+            <div class="standing-team">${teamNameFromAbbr(s.abbr)}</div>
             <div class="standing-val">${s.w}</div>
             <div class="standing-val">${s.d}</div>
             <div class="standing-val">${s.l}</div>
@@ -3535,6 +3513,7 @@ function renderStandings() {
   `;
 }
 
+// =================== EVENTS ===================
 function attachEvents() {
   document.querySelectorAll('.view-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -3569,15 +3548,6 @@ function attachEvents() {
     });
   });
 
-  // Standings team click — show team matches
-  document.querySelectorAll('.standing-team-link').forEach(el => {
-    el.addEventListener('click', () => {
-      const abbr = el.dataset.teamAbbr;
-      const teamName = teamNameFromAbbr(abbr);
-      showTeamMatches(teamName, standingsLeague);
-    });
-  });
-
   // Match detail panel clicks
   document.querySelectorAll('[data-match-idx]').forEach(el => {
     el.addEventListener('click', (e) => {
@@ -3594,83 +3564,8 @@ function navigate(dir) {
   else currentDate.setDate(currentDate.getDate() + dir);
 }
 
+// =================== MATCH DETAIL PANEL ===================
 let detailPanelOpen = false;
-
-function showTeamMatches(teamNameRu, leagueId) {
-  // Find original English name from TEAM_RU
-  let engName = teamNameRu;
-  for (const [en, ru] of Object.entries(TEAM_RU)) {
-    if (ru === teamNameRu) { engName = en; break; }
-  }
-  // Also check abbr map reverse
-  const abbrMap = {
-    'Арсенал':'Arsenal','Ман Сити':'Man City','Ливерпуль':'Liverpool','Челси':'Chelsea',
-    'Ман Юнайтед':'Man Utd','Тоттенхэм':'Tottenham','Астон Вилла':'Aston Villa',
-    'Барселона':'Barcelona','Реал Мадрид':'Real Madrid','Атлетико Мадрид':'Atletico Madrid',
-    'Наполи':'Napoli','Интер':'Inter','Ювентус':'Juventus','Милан':'AC Milan',
-    'Бавария':'Bayern Munich','Дортмунд':'Dortmund','Леверкузен':'Leverkusen',
-    'ПСЖ':'PSG','Марсель':'Marseille','Монако':'Monaco','Лилль':'Lille',
-    'Зенит':'Zenit','Спартак':'Spartak','ЦСКА':'CSKA','Динамо':'Dynamo',
-    'Локомотив':'Lokomotiv','Краснодар':'Krasnodar','Ростов':'Rostov','Рубин':'Rubin',
-    'Атлетико':'Atletico Madrid','Лацио':'Lazio',
-  };
-  const searchName = abbrMap[teamNameRu] || engName;
-
-  const allMatches = MATCHES[leagueId] || [];
-  const teamMatches = allMatches.filter(m =>
-    m.home === searchName || m.away === searchName ||
-    m.home.includes(searchName) || m.away.includes(searchName)
-  ).slice(0, 10);
-
-  const lg = LEAGUES[leagueId];
-  const overlay = document.createElement('div');
-  overlay.className = 'match-detail-overlay';
-  overlay.onclick = () => { overlay.classList.remove('open'); panel.classList.remove('open'); setTimeout(()=>{overlay.remove();panel.remove()},350); };
-
-  const panel = document.createElement('div');
-  panel.className = 'match-detail-panel';
-  panel.onclick = e => e.stopPropagation();
-
-  panel.innerHTML = `
-    <div class="mdp-header">
-      <div class="mdp-league" style="color:${lg.colorBright}">${lg.logo} ${lg.shortName}</div>
-      <button class="mdp-close" onclick="this.closest('.match-detail-panel').previousElementSibling.click()">✕</button>
-    </div>
-    <div style="text-align:center;padding:16px 0 8px">
-      <div style="width:52px;height:52px;margin:0 auto 8px">${teamCrest(searchName)}</div>
-      <div style="font-family:'Oswald',sans-serif;font-size:20px;font-weight:600;letter-spacing:0.5px">${teamNameRu}</div>
-    </div>
-    <div class="mdp-section">
-      <div class="mdp-section-title">📅 Матчи</div>
-      ${teamMatches.length ? teamMatches.map(m => {
-        const isHome = m.home === searchName;
-        const opponent = isHome ? m.away : m.home;
-        const prefix = isHome ? 'vs' : '@';
-        const scoreStr = m.score || '—';
-        const isPast = !!m.score;
-        return `<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);margin-bottom:6px;cursor:pointer" data-team-match='${JSON.stringify(m)}'>
-          <div style="font-size:12px;color:var(--gray-400);min-width:70px">${m.date.slice(5)}</div>
-          <div style="flex:1;font-size:13px;font-weight:500"><span style="color:var(--gray-500);margin-right:4px">${prefix}</span> ${teamRu(opponent)}</div>
-          <div style="font-family:'Oswald',sans-serif;font-size:15px;font-weight:600;color:${isPast ? '#a5b4fc' : 'var(--gray-400)'}">${scoreStr}</div>
-        </div>`;
-      }).join('') : '<div style="text-align:center;color:var(--gray-500);padding:16px">Нет матчей</div>'}
-    </div>
-  `;
-
-  document.body.appendChild(overlay);
-  document.body.appendChild(panel);
-  requestAnimationFrame(() => { overlay.classList.add('open'); panel.classList.add('open'); });
-
-  // Make team matches clickable to open detail
-  panel.querySelectorAll('[data-team-match]').forEach(el => {
-    el.addEventListener('click', () => {
-      const matchData = JSON.parse(el.dataset.teamMatch);
-      matchData.league = leagueId;
-      overlay.classList.remove('open'); panel.classList.remove('open');
-      setTimeout(() => { overlay.remove(); panel.remove(); openMatchDetail(matchData); }, 350);
-    });
-  });
-}
 
 function openMatchDetail(m) {
   closeMatchDetail();
@@ -3678,10 +3573,9 @@ function openMatchDetail(m) {
   const key = matchKey(m);
   const events = MATCH_EVENTS[key] || [];
   const isLive = !!m.live;
-  const isUpcoming = !m.score && !isLive;
-  const score = isLive ? m.live.score : (m.score || '—');
-  const statusLabel = isLive ? t('liveNow') : isUpcoming ? t('upcoming') : t('fullTime');
-  const statusClass = isLive ? 'mdp-status-live' : isUpcoming ? 'mdp-status-upcoming' : 'mdp-status-ft';
+  const score = isLive ? m.live.score : m.score;
+  const statusLabel = isLive ? t('liveNow') : t('fullTime');
+  const statusClass = isLive ? 'mdp-status-live' : 'mdp-status-ft';
 
   const eventIcons = {
     goal: '⚽',
@@ -3798,6 +3692,7 @@ function closeMatchDetail() {
 
 function detailEscHandler(e) { if (e.key === 'Escape') closeMatchDetail(); }
 
+// =================== ANIMATED LOGO ===================
 (function initLogoAnimation() {
   const icon = document.getElementById('logoIcon');
   const faces = icon.querySelectorAll('.logo-face');
@@ -3832,6 +3727,7 @@ function detailEscHandler(e) { if (e.key === 'Escape') closeMatchDetail(); }
   setInterval(cycleLogo, 10000);
 })();
 
+// =================== INIT ===================
 renderLeagueTabs();
 render();
 </script>
